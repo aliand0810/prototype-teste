@@ -1,916 +1,1487 @@
 
+<!-- =========================
+FICHIER : index.html
+========================= -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ktb-import export - Confiseries & Boissons du Monde</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #fafafa;
-            color: #333;
-        }
-
-        /* TOP BAR */
-        .top-bar {
-            background: #e84393;
-            color: white;
-            text-align: center;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        .top-bar span { font-weight: 700; }
-
-        /* HEADER */
-        .header {
-            background: white;
-            padding: 16px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            color: #e84393;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .logo .emoji { font-size: 32px; }
-        .logo .sub { font-size: 11px; color: #888; font-weight: 500; display: block; margin-top: -4px; }
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-            transition: color 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .nav-links a:hover { color: #e84393; }
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: #f5f5f5;
-            border-radius: 25px;
-            padding: 8px 16px;
-            gap: 8px;
-        }
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            width: 180px;
-        }
-        .btn-icon {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            position: relative;
-        }
-        .cart-badge {
-            position: absolute;
-            top: -6px;
-            right: -8px;
-            background: #e84393;
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-        .btn-login {
-            background: #e84393;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 25px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-login:hover { background: #d63384; }
-
-        /* HERO */
-        .hero {
-            position: relative;
-            background: linear-gradient(135deg, #e84393 0%, #fd79a8 50%, #fab1a0 100%);
-            padding: 80px 40px;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '🍬🍭🍫🥤🍿🧁🍩🍪';
-            position: absolute;
-            font-size: 60px;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            letter-spacing: 20px;
-            opacity: 0.2;
-            white-space: nowrap;
-        }
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 16px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        .hero p {
-            font-size: 18px;
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto 32px;
-            opacity: 0.95;
-        }
-        .btn-hero {
-            display: inline-block;
-            background: white;
-            color: #e84393;
-            padding: 14px 40px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 16px;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .btn-hero:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        /* CATEGORIES */
-        .categories-bar {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 24px 40px;
-            flex-wrap: wrap;
-            background: white;
-            border-bottom: 1px solid #eee;
-        }
-        .cat-pill {
-            background: #f8f8f8;
-            border: 2px solid #eee;
-            padding: 10px 24px;
-            border-radius: 25px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: #555;
-        }
-        .cat-pill:hover, .cat-pill.active {
-            background: #e84393;
-            color: white;
-            border-color: #e84393;
-        }
-
-        /* SECTION TITLES */
-        .section {
-            padding: 60px 40px;
-        }
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-        }
-        .section-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #222;
-        }
-        .section-title .pink { color: #e84393; }
-        .see-all {
-            color: #e84393;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: gap 0.3s;
-        }
-        .see-all:hover { gap: 8px; }
-
-        /* PRODUCT GRID */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 24px;
-        }
-        .product-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            transition: all 0.3s;
-            position: relative;
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        }
-        .product-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: #e84393;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            z-index: 2;
-        }
-        .product-badge.promo {
-            background: #ff6b6b;
-        }
-        .product-badge.new {
-            background: #00b894;
-        }
-        .product-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #f9f9f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
-        }
-        .product-info {
-            padding: 16px;
-        }
-        .product-brand {
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-        .product-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin: 6px 0;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .product-pricing {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .product-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: #e84393;
-        }
-        .product-old-price {
-            font-size: 13px;
-            color: #bbb;
-            text-decoration: line-through;
-        }
-        .btn-add-cart {
-            width: 100%;
-            background: #e84393;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 12px;
-            border-radius: 8px;
-        }
-        .btn-add-cart:hover { background: #d63384; }
-
-        /* VIDEO BANNER */
-        .video-banner {
-            background: linear-gradient(135deg, #2d3436, #636e72);
-            padding: 80px 40px;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-        .video-banner h2 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-        .video-banner p {
-            font-size: 16px;
-            opacity: 0.8;
-            margin-bottom: 28px;
-        }
-        .btn-discover {
-            display: inline-block;
-            background: #e84393;
-            color: white;
-            padding: 14px 36px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 15px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .btn-discover:hover { background: #d63384; transform: scale(1.05); }
-
-        /* FEATURES */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 32px;
-            padding: 60px 40px;
-            background: white;
-        }
-        .feature {
-            text-align: center;
-            padding: 24px;
-        }
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-        .feature h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .feature p {
-            font-size: 13px;
-            color: #777;
-            line-height: 1.6;
-        }
-
-        /* NEWSLETTER */
-        .newsletter {
-            background: linear-gradient(135deg, #e84393, #fd79a8);
-            padding: 60px 40px;
-            text-align: center;
-            color: white;
-        }
-        .newsletter h2 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-        .newsletter p {
-            margin-bottom: 24px;
-            opacity: 0.9;
-        }
-        .newsletter-form {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .newsletter-form input {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 25px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            outline: none;
-        }
-        .newsletter-form button {
-            background: #222;
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 25px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .newsletter-form button:hover { background: #444; }
-
-        /* FOOTER */
-        .footer {
-            background: #222;
-            color: #ccc;
-            padding: 60px 40px 30px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        .footer-col h4 {
-            color: white;
-            font-size: 16px;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-        .footer-col a {
-            display: block;
-            color: #999;
-            text-decoration: none;
-            font-size: 13px;
-            margin-bottom: 8px;
-            transition: color 0.3s;
-        }
-        .footer-col a:hover { color: #e84393; }
-        .footer-col p {
-            font-size: 13px;
-            line-height: 1.8;
-            color: #999;
-        }
-        .footer-bottom {
-            border-top: 1px solid #333;
-            padding-top: 24px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
-        .social-links {
-            display: flex;
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .social-links a {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            text-decoration: none;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        .social-links a:hover {
-            background: #e84393;
-            color: white;
-        }
-
-        /* MARQUEE */
-        .marquee-container {
-            overflow: hidden;
-            background: #ffeef7;
-            padding: 12px 0;
-        }
-        .marquee {
-            display: flex;
-            gap: 40px;
-            animation: scroll 20s linear infinite;
-            white-space: nowrap;
-        }
-        .marquee span {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e84393;
-        }
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .header { padding: 12px 16px; flex-wrap: wrap; gap: 12px; }
-            .nav-links { display: none; }
-            .hero h1 { font-size: 28px; }
-            .hero p { font-size: 15px; }
-            .section { padding: 40px 16px; }
-            .section-title { font-size: 22px; }
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .search-bar input { width: 120px; }
-            .newsletter-form { flex-direction: column; }
-            .categories-bar { padding: 16px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accueil - Gestion Boutique</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        🚚 <span>Livraison rapide</span> partout en France | 🍬 +2000 produits importés USA, Japon, UK
+  <header class="header">
+    <div class="container topbar">
+      <h1>Gestion Boutique</h1>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <a href="admin-login.html">Connexion admin</a>
+        <a href="client-login.html">Connexion client</a>
+        <a href="client-register.html">Inscription client</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- HEADER -->
-    <header class="header">
-        <a href="#" class="logo">
-            <span class="emoji">🍭</span>
-            <div>
-                Ktb-import export
-                <span class="sub">Confiseries & Boissons du Monde</span>
-            </div>
-        </a>
-        <ul class="nav-links">
-            <li><a href="#">Nouveautés</a></li>
-            <li><a href="#">Confiseries</a></li>
-            <li><a href="#">Boissons</a></li>
-            <li><a href="#">Snacks</a></li>
-            <li><a href="#">Chocolats</a></li>
-            <li><a href="#">Promos</a></li>
-        </ul>
-        <div class="header-actions">
-            <div class="search-bar">
-                <span>🔍</span>
-                <input type="text" placeholder="Rechercher un produit...">
-            </div>
-            <button class="btn-icon">👤</button>
-            <button class="btn-icon">
-                🛒
-                <span class="cart-badge">3</span>
-            </button>
-            <button class="btn-login">Se connecter</button>
-        </div>
-    </header>
-
-    <!-- MARQUEE -->
-    <div class="marquee-container">
-        <div class="marquee">
-            <span>🍬 Nouveaux arrivages chaque semaine</span>
-            <span>🇺🇸 Importation directe des USA</span>
-            <span>🇯🇵 Snacks japonais exclusifs</span>
-            <span>🍫 Chocolat Dubai tendance</span>
-            <span>🥤 Boissons exotiques</span>
-            <span>📦 Livraison express 24-48h</span>
-            <span>🍬 Nouveaux arrivages chaque semaine</span>
-            <span>🇺🇸 Importation directe des USA</span>
-            <span>🇯🇵 Snacks japonais exclusifs</span>
-            <span>🍫 Chocolat Dubai tendance</span>
-            <span>🥤 Boissons exotiques</span>
-            <span>📦 Livraison express 24-48h</span>
-        </div>
-    </div>
-
-    <!-- HERO -->
-    <section class="hero">
-        <h1>🍿🍭🍬🥤 Confiseries du Monde</h1>
-        <p>Découvrez notre sélection de bonbons, snacks et boissons importés des quatre coins du monde. Des saveurs uniques livrées chez vous !</p>
-        <a href="#" class="btn-hero">Je découvre →</a>
+  <main class="container">
+    <section class="card center">
+      <h2>Bienvenue</h2>
+      <p>Application de gestion avec :</p>
+      <ul class="list">
+        <li>Connexion administrateur</li>
+        <li>Changement du mot de passe admin</li>
+        <li>Gestion des groupes</li>
+        <li>Gestion des articles</li>
+        <li>Création de comptes clients</li>
+        <li>Panier et commandes</li>
+      </ul>
+      <div class="actions center-actions">
+        <a class="btn btn-primary" href="admin-login.html">Espace admin</a>
+        <a class="btn btn-success" href="client-login.html">Espace client</a>
+      </div>
     </section>
+  </main>
 
-    <!-- CATEGORIES -->
-    <div class="categories-bar">
-        <a href="#" class="cat-pill active">🔥 Tendances</a>
-        <a href="#" class="cat-pill">🍬 Bonbons</a>
-        <a href="#" class="cat-pill">🍫 Chocolats</a>
-        <a href="#" class="cat-pill">🥤 Boissons</a>
-        <a href="#" class="cat-pill">🍿 Snacks</a>
-        <a href="#" class="cat-pill">🇯🇵 Japon</a>
-        <a href="#" class="cat-pill">🇺🇸 USA</a>
-        <a href="#" class="cat-pill">🇬🇧 UK</a>
-    </div>
-
-    <!-- NOUVEAUTÉS -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">🆕 Nos <span class="pink">Nouveautés</span></h2>
-            <a href="#" class="see-all">Voir tout →</a>
-        </div>
-        <div class="product-grid">
-            <div class="product-card">
-                <span class="product-badge new">Nouveau</span>
-                <div class="product-img">🥤</div>
-                <div class="product-info">
-                    <div class="product-brand">Red Bull</div>
-                    <div class="product-name">Red Bull The Organics Tonic Water 24 x 33cl</div>
-                    <div class="product-pricing">
-                        <span class="product-price">34,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge new">Nouveau</span>
-                <div class="product-img">🍫</div>
-                <div class="product-info">
-                    <div class="product-brand">Reese's</div>
-                    <div class="product-name">Reese's Nutrageous Bar 18 x 47g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">28,50€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge new">Nouveau</span>
-                <div class="product-img">🍬</div>
-                <div class="product-info">
-                    <div class="product-brand">Jelly Belly</div>
-                    <div class="product-name">Jelly Belly Bean Boozled Small Box 24 x 45g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">42,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge new">Nouveau</span>
-                <div class="product-img">🍫</div>
-                <div class="product-info">
-                    <div class="product-brand">M&M's</div>
-                    <div class="product-name">M&M's Brownie 18 x 35g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">22,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge new">Nouveau</span>
-                <div class="product-img">🥤</div>
-                <div class="product-info">
-                    <div class="product-brand">Fanta</div>
-                    <div class="product-name">Fanta Mango 24 x 330ml</div>
-                    <div class="product-pricing">
-                        <span class="product-price">29,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge new">Nouveau</span>
-                <div class="product-img">🥒</div>
-                <div class="product-info">
-                    <div class="product-brand">Van Holten's</div>
-                    <div class="product-name">Van Holten's Pickle Puffed Snacks Hot Mama 10x90g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">19,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- VIDEO BANNER -->
-    <section class="video-banner">
-        <h2>🍫 Chocolat Dubai - La Tendance du Moment</h2>
-        <p>Découvrez nos tablettes de chocolat Dubai exclusives avec kayadif, pistache et bien plus !</p>
-        <a href="#" class="btn-discover">Je découvre →</a>
-    </section>
-
-    <!-- PROMOS -->
-    <section class="section" style="background: #fff5f9;">
-        <div class="section-header">
-            <h2 class="section-title">🔥 <span class="pink">Promos</span> du moment</h2>
-            <a href="#" class="see-all">Voir tout →</a>
-        </div>
-        <div class="product-grid">
-            <div class="product-card">
-                <span class="product-badge promo">-30%</span>
-                <div class="product-img">🍫</div>
-                <div class="product-info">
-                    <div class="product-brand">iConiksweet</div>
-                    <div class="product-name">Tablette Chocolat Dubai Kayadif Chocolat au lait & Bueno 12x200g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">49,90€</span>
-                        <span class="product-old-price">71,28€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge promo">-30%</span>
-                <div class="product-img">🍫</div>
-                <div class="product-info">
-                    <div class="product-brand">iConiksweet</div>
-                    <div class="product-name">Tablette Chocolat Dubai Kayadif Chocolat blanc & Pistache 12x100g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">35,90€</span>
-                        <span class="product-old-price">51,28€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge promo">-28%</span>
-                <div class="product-img">🍬</div>
-                <div class="product-info">
-                    <div class="product-brand">Oufti</div>
-                    <div class="product-name">Oufti Fraise 24x60g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">18,90€</span>
-                        <span class="product-old-price">26,25€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <span class="product-badge promo">-28%</span>
-                <div class="product-img">🍌</div>
-                <div class="product-info">
-                    <div class="product-brand">Oufti</div>
-                    <div class="product-name">Oufti Banane Spéculoos 24x70g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">19,90€</span>
-                        <span class="product-old-price">27,60€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CATÉGORIES VEDETTES -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">🍿🍭🍬🥤 Nos <span class="pink">catégories vedettes</span></h2>
-        </div>
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-img">🥜</div>
-                <div class="product-info">
-                    <div class="product-brand">iConiksweet</div>
-                    <div class="product-name">Buenos Dias - Crème de pistache et bâtonnets croustillants 24x55g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">39,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-img">🍓</div>
-                <div class="product-info">
-                    <div class="product-brand">iConiksweet</div>
-                    <div class="product-name">Buenos Dias - Crème de fraise et bâtonnets croustillants 24x55g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">39,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-img">🍪</div>
-                <div class="product-info">
-                    <div class="product-brand">iConiksweet</div>
-                    <div class="product-name">Buenos Dias - Crème de Spéculoos et bâtonnets croustillants 24x55g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">39,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-img">🥥</div>
-                <div class="product-info">
-                    <div class="product-brand">iConiksweet</div>
-                    <div class="product-name">Buenos Dias - Crème de coconut et bâtonnets croustillants 24x55g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">39,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-img">🍫</div>
-                <div class="product-info">
-                    <div class="product-brand">Bounty</div>
-                    <div class="product-name">Bounty Protein Chocolate 12 x 52g</div>
-                    <div class="product-pricing">
-                        <span class="product-price">24,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-img">🥤</div>
-                <div class="product-info">
-                    <div class="product-brand">Fanta</div>
-                    <div class="product-name">Fanta White Peach Japan 24x300ml - Pêche Blanche</div>
-                    <div class="product-pricing">
-                        <span class="product-price">45,90€</span>
-                    </div>
-                    <button class="btn-add-cart">Ajouter au panier</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="features">
-        <div class="feature">
-            <div class="feature-icon">🚚</div>
-            <h3>Livraison Rapide</h3>
-            <p>Nous assurons la livraison de produits en provenance des États-Unis, du Japon et de la Chine à travers toute la France !</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🔒</div>
-            <h3>Paiement Sécurisé</h3>
-            <p>Votre paiement est sécurisé grâce aux dernières normes de sécurité en vigueur. CB, PayPal, Apple Pay.</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🌍</div>
-            <h3>Produits du Monde</h3>
-            <p>Nous proposons une sélection unique de confiseries et boissons importées des quatre coins du monde.</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">⭐</div>
-            <h3>Qualité Garantie</h3>
-            <p>Tous nos produits sont sélectionnés avec soin pour vous garantir une qualité irréprochable.</p>
-        </div>
-    </section>
-
-    <!-- NEWSLETTER -->
-    <section class="newsletter">
-        <h2>📬 Restez informé !</h2>
-        <p>Inscrivez-vous à notre newsletter pour recevoir nos offres exclusives et nouveautés.</p>
-        <div class="newsletter-form">
-            <input type="email" placeholder="Votre adresse email...">
-            <button>S'inscrire</button>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>🍭 Ktb-import export</h4>
-                <p>Votre destination #1 pour les confiseries, snacks et boissons importés du monde entier.</p>
-                <div class="social-links">
-                    <a href="#">📘</a>
-                    <a href="#">📸</a>
-                    <a href="#">🐦</a>
-                    <a href="#">🎵</a>
-                </div>
-            </div>
-            <div class="footer-col">
-                <h4>Boutique</h4>
-                <a href="#">Nouveautés</a>
-                <a href="#">Meilleures ventes</a>
-                <a href="#">Promotions</a>
-                <a href="#">Toutes les catégories</a>
-                <a href="#">Marques</a>
-            </div>
-            <div class="footer-col">
-                <h4>Informations</h4>
-                <a href="#">À propos</a>
-                <a href="#">Livraison</a>
-                <a href="#">Retours & Remboursements</a>
-                <a href="#">FAQ</a>
-                <a href="#">Contact</a>
-            </div>
-            <div class="footer-col">
-                <h4>Légal</h4>
-                <a href="#">Conditions générales</a>
-                <a href="#">Politique de confidentialité</a>
-                <a href="#">Mentions légales</a>
-                <a href="#">Cookies</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2025 Ktb-import export. Tous droits réservés. | Fait avec 🍬 en France
-        </div>
-    </footer>
-
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
+
+<!-- =========================
+FICHIER : admin-login.html
+========================= -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion Admin</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container topbar">
+      <h1>Connexion Admin</h1>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="messageBox"></div>
+
+    <section class="card form-card">
+      <h2>Se connecter en tant qu'administrateur</h2>
+      <p class="small">Compte par défaut : <strong>admin</strong> / <strong>admin</strong></p>
+
+      <label>Identifiant</label>
+      <input type="text" id="adminUsername" placeholder="admin" />
+
+      <label>Mot de passe</label>
+      <input type="password" id="adminPassword" placeholder="Mot de passe" />
+
+      <button class="btn btn-primary" id="adminLoginBtn">Connexion</button>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin-login.js"></script>
+</body>
+</html>
+
+<!-- =========================
+FICHIER : admin-dashboard.html
+========================= -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tableau de bord Admin</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container topbar">
+      <h1>Administration</h1>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <button class="btn btn-danger nav-btn" id="logoutBtn">Déconnexion</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="messageBox"></div>
+
+    <section class="stats">
+      <div class="stat-box">
+        <h3>Articles</h3>
+        <p id="statArticles">0</p>
+      </div>
+      <div class="stat-box">
+        <h3>Groupes</h3>
+        <p id="statGroups">0</p>
+      </div>
+      <div class="stat-box">
+        <h3>Clients</h3>
+        <p id="statClients">0</p>
+      </div>
+      <div class="stat-box">
+        <h3>Commandes</h3>
+        <p id="statOrders">0</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Modifier le mot de passe admin</h2>
+      <div class="grid-2">
+        <div>
+          <label>Ancien mot de passe</label>
+          <input type="password" id="oldAdminPassword" />
+        </div>
+        <div>
+          <label>Nouveau mot de passe</label>
+          <input type="password" id="newAdminPassword" />
+        </div>
+      </div>
+      <button class="btn btn-primary mt" id="changeAdminPasswordBtn">Mettre à jour</button>
+    </section>
+
+    <section class="card">
+      <h2>Gestion des groupes</h2>
+      <input type="hidden" id="editGroupId" />
+      <div class="grid-2">
+        <div>
+          <label>Nom du groupe</label>
+          <input type="text" id="groupName" />
+        </div>
+        <div>
+          <label>Description</label>
+          <input type="text" id="groupDescription" />
+        </div>
+      </div>
+      <div class="actions mt">
+        <button class="btn btn-success" id="saveGroupBtn">Ajouter / Enregistrer</button>
+        <button class="btn btn-secondary" id="resetGroupBtn">Réinitialiser</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="groupsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Gestion des articles</h2>
+      <input type="hidden" id="editArticleId" />
+      <div class="grid-2">
+        <div>
+          <label>Nom de l'article</label>
+          <input type="text" id="articleName" />
+        </div>
+        <div>
+          <label>Prix</label>
+          <input type="number" id="articlePrice" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <div class="grid-2 mt">
+        <div>
+          <label>Stock</label>
+          <input type="number" id="articleStock" min="0" />
+        </div>
+        <div>
+          <label>Groupe</label>
+          <select id="articleGroup"></select>
+        </div>
+      </div>
+
+      <div class="mt">
+        <label>Description</label>
+        <textarea id="articleDescription"></textarea>
+      </div>
+
+      <div class="mt">
+        <label>Statut</label>
+        <select id="articleActive">
+          <option value="true">Actif</option>
+          <option value="false">Inactif</option>
+        </select>
+      </div>
+
+      <div class="actions mt">
+        <button class="btn btn-success" id="saveArticleBtn">Ajouter / Enregistrer</button>
+        <button class="btn btn-secondary" id="resetArticleBtn">Réinitialiser</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Prix</th>
+              <th>Stock</th>
+              <th>Groupe</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="articlesTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Liste des clients</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody id="clientsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Gestion des commandes</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Client</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Date</th>
+              <th>Détails</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
+
+<!-- =========================
+FICHIER : client-register.html
+========================= -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription Client</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container topbar">
+      <h1>Inscription Client</h1>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <a href="client-login.html">Connexion client</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="messageBox"></div>
+
+    <section class="card form-card">
+      <h2>Créer un compte client</h2>
+
+      <div class="grid-2">
+        <div>
+          <label>Nom</label>
+          <input type="text" id="registerNom" />
+        </div>
+        <div>
+          <label>Prénom</label>
+          <input type="text" id="registerPrenom" />
+        </div>
+      </div>
+
+      <div class="grid-2 mt">
+        <div>
+          <label>Email</label>
+          <input type="email" id="registerEmail" />
+        </div>
+        <div>
+          <label>Téléphone</label>
+          <input type="text" id="registerPhone" />
+        </div>
+      </div>
+
+      <div class="mt">
+        <label>Mot de passe</label>
+        <input type="password" id="registerPassword" />
+      </div>
+
+      <button class="btn btn-success mt" id="clientRegisterBtn">Créer un compte</button>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/client-register.js"></script>
+</body>
+</html>
+
+<!-- =========================
+FICHIER : client-login.html
+========================= -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion Client</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container topbar">
+      <h1>Connexion Client</h1>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <a href="client-register.html">Inscription</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="messageBox"></div>
+
+    <section class="card form-card">
+      <h2>Se connecter</h2>
+
+      <label>Email</label>
+      <input type="email" id="clientLoginEmail" />
+
+      <label>Mot de passe</label>
+      <input type="password" id="clientLoginPassword" />
+
+      <button class="btn btn-primary" id="clientLoginBtn">Connexion client</button>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/client-login.js"></script>
+</body>
+</html>
+
+<!-- =========================
+FICHIER : client-dashboard.html
+========================= -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Espace Client</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container topbar">
+      <h1>Espace Client</h1>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <button class="btn btn-danger nav-btn" id="logoutBtn">Déconnexion</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="messageBox"></div>
+
+    <section class="card">
+      <h2 id="clientWelcomeText">Bienvenue</h2>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2>Articles disponibles</h2>
+        <div id="clientArticlesList" class="articles-grid"></div>
+      </div>
+
+      <div class="card">
+        <h2>Mon panier</h2>
+        <div id="cartList"></div>
+        <p class="total-line">Total : <strong><span id="cartTotal">0.00</span> €</strong></p>
+        <button class="btn btn-success" id="placeOrderBtn">Valider la commande</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Mes commandes</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Date</th>
+              <th>Détails</th>
+            </tr>
+          </thead>
+          <tbody id="clientOrdersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/client-dashboard.js"></script>
+</body>
+</html>
+
+<!-- =========================
+FICHIER : css/style.css
+========================= -->
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  padding: 18px 0;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-btn {
+  width: auto;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #dbe3ef;
+}
+
+.form-card {
+  max-width: 520px;
+  margin: 30px auto;
+}
+
+.center {
+  text-align: center;
+}
+
+.center-actions {
+  justify-content: center;
+}
+
+h1, h2, h3 {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input, select, textarea, button {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-success {
+  background: #16a34a;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.mt {
+  margin-top: 14px;
+}
+
+.small {
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.list {
+  margin: 12px 0 20px 20px;
+  text-align: left;
+  display: inline-block;
+}
+
+.message {
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  background: white;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid #dbe3ef;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.stat-box p {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #dbe3ef;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #eff6ff;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.article-card {
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.article-card p {
+  margin: 6px 0;
+  color: #4b5563;
+}
+
+.total-line {
+  margin: 14px 0;
+}
+
+.badge {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cart-item {
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hidden {
+  display: none;
+}
+
+<!-- =========================
+FICHIER : js/storage.js
+========================= -->
+const storageKeys = {
+  admins: "app_admins",
+  groups: "app_groups",
+  articles: "app_articles",
+  clients: "app_clients",
+  orders: "app_orders",
+  session: "app_session"
+};
+
+function getData(key, fallback = []) {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : fallback;
+}
+
+function setData(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function initDefaultData() {
+  if (!localStorage.getItem(storageKeys.admins)) {
+    setData(storageKeys.admins, [
+      { id: 1, username: "admin", password: "admin", mustChangePassword: true }
+    ]);
+  }
+
+  if (!localStorage.getItem(storageKeys.groups)) {
+    setData(storageKeys.groups, [
+      { id: 1, name: "Boissons", description: "Toutes les boissons" },
+      { id: 2, name: "Snacks", description: "Petits produits à grignoter" }
+    ]);
+  }
+
+  if (!localStorage.getItem(storageKeys.articles)) {
+    setData(storageKeys.articles, [
+      { id: 1, name: "Coca Cola", description: "Boisson gazeuse", price: 2.5, stock: 20, groupId: 1, active: true },
+      { id: 2, name: "Chips", description: "Snack salé", price: 1.8, stock: 35, groupId: 2, active: true }
+    ]);
+  }
+
+  if (!localStorage.getItem(storageKeys.clients)) {
+    setData(storageKeys.clients, []);
+  }
+
+  if (!localStorage.getItem(storageKeys.orders)) {
+    setData(storageKeys.orders, []);
+  }
+
+  if (!localStorage.getItem(storageKeys.session)) {
+    setData(storageKeys.session, { type: null, userId: null });
+  }
+}
+
+function setSession(type, userId) {
+  setData(storageKeys.session, { type, userId });
+}
+
+function getSession() {
+  return getData(storageKeys.session, { type: null, userId: null });
+}
+
+function logout() {
+  setSession(null, null);
+  window.location.href = "index.html";
+}
+
+function getCartKey(clientId) {
+  return "cart_client_" + clientId;
+}
+
+function getCart(clientId) {
+  return getData(getCartKey(clientId), []);
+}
+
+function setCart(clientId, cart) {
+  setData(getCartKey(clientId), cart);
+}
+
+initDefaultData();
+
+<!-- =========================
+FICHIER : js/app.js
+========================= -->
+function showMessage(text, type = "success") {
+  const box = document.getElementById("messageBox");
+  if (!box) return;
+  box.innerHTML = '<div class="message ' + type + '">' + text + '</div>';
+  setTimeout(() => {
+    box.innerHTML = "";
+  }, 3500);
+}
+
+function requireAdmin() {
+  const session = getSession();
+  if (session.type !== "admin") {
+    window.location.href = "admin-login.html";
+  }
+}
+
+function requireClient() {
+  const session = getSession();
+  if (session.type !== "client") {
+    window.location.href = "client-login.html";
+  }
+}
+
+function getCurrentClient() {
+  const session = getSession();
+  return getData(storageKeys.clients).find(c => c.id === session.userId);
+}
+
+function getCurrentAdmin() {
+  const session = getSession();
+  return getData(storageKeys.admins).find(a => a.id === session.userId);
+}
+
+function formatPrice(value) {
+  return Number(value).toFixed(2) + " €";
+}
+
+<!-- =========================
+FICHIER : js/admin-login.js
+========================= -->
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("adminLoginBtn");
+
+  btn.addEventListener("click", () => {
+    const username = document.getElementById("adminUsername").value.trim();
+    const password = document.getElementById("adminPassword").value.trim();
+    const admins = getData(storageKeys.admins);
+    const admin = admins.find(a => a.username === username && a.password === password);
+
+    if (!admin) {
+      showMessage("Identifiants administrateur invalides.", "error");
+      return;
+    }
+
+    setSession("admin", admin.id);
+    window.location.href = "admin-dashboard.html";
+  });
+});
+
+<!-- =========================
+FICHIER : js/admin-dashboard.js
+========================= -->
+document.addEventListener("DOMContentLoaded", () => {
+  requireAdmin();
+
+  document.getElementById("logoutBtn").addEventListener("click", logout);
+  document.getElementById("changeAdminPasswordBtn").addEventListener("click", changeAdminPassword);
+  document.getElementById("saveGroupBtn").addEventListener("click", saveGroup);
+  document.getElementById("resetGroupBtn").addEventListener("click", resetGroupForm);
+  document.getElementById("saveArticleBtn").addEventListener("click", saveArticle);
+  document.getElementById("resetArticleBtn").addEventListener("click", resetArticleForm);
+
+  renderStats();
+  renderGroupOptions();
+  renderGroups();
+  renderArticles();
+  renderClients();
+  renderOrdersAdmin();
+
+  const admin = getCurrentAdmin();
+  if (admin && admin.mustChangePassword) {
+    showMessage("Première connexion détectée. Veuillez modifier le mot de passe admin.", "success");
+  }
+});
+
+function renderStats() {
+  document.getElementById("statArticles").textContent = getData(storageKeys.articles).length;
+  document.getElementById("statGroups").textContent = getData(storageKeys.groups).length;
+  document.getElementById("statClients").textContent = getData(storageKeys.clients).length;
+  document.getElementById("statOrders").textContent = getData(storageKeys.orders).length;
+}
+
+function changeAdminPassword() {
+  const admins = getData(storageKeys.admins);
+  const admin = getCurrentAdmin();
+  const oldPassword = document.getElementById("oldAdminPassword").value;
+  const newPassword = document.getElementById("newAdminPassword").value;
+
+  if (!admin) return;
+
+  if (admin.password !== oldPassword) {
+    showMessage("Ancien mot de passe incorrect.", "error");
+    return;
+  }
+
+  if (newPassword.length < 4) {
+    showMessage("Le nouveau mot de passe doit contenir au moins 4 caractères.", "error");
+    return;
+  }
+
+  const found = admins.find(a => a.id === admin.id);
+  found.password = newPassword;
+  found.mustChangePassword = false;
+  setData(storageKeys.admins, admins);
+
+  document.getElementById("oldAdminPassword").value = "";
+  document.getElementById("newAdminPassword").value = "";
+  showMessage("Mot de passe modifié avec succès.", "success");
+}
+
+function renderGroups() {
+  const groups = getData(storageKeys.groups);
+  const tbody = document.getElementById("groupsTableBody");
+  tbody.innerHTML = "";
+
+  groups.forEach(group => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${group.id}</td>
+      <td>${group.name}</td>
+      <td>${group.description || ""}</td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="editGroup(${group.id})">Modifier</button>
+          <button class="btn btn-danger" onclick="deleteGroup(${group.id})">Supprimer</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function saveGroup() {
+  const id = document.getElementById("editGroupId").value;
+  const name = document.getElementById("groupName").value.trim();
+  const description = document.getElementById("groupDescription").value.trim();
+
+  if (!name) {
+    showMessage("Le nom du groupe est obligatoire.", "error");
+    return;
+  }
+
+  const groups = getData(storageKeys.groups);
+
+  if (id) {
+    const group = groups.find(g => g.id == id);
+    group.name = name;
+    group.description = description;
+    showMessage("Groupe modifié.", "success");
+  } else {
+    groups.push({
+      id: groups.length ? Math.max(...groups.map(g => g.id)) + 1 : 1,
+      name,
+      description
+    });
+    showMessage("Groupe ajouté.", "success");
+  }
+
+  setData(storageKeys.groups, groups);
+  resetGroupForm();
+  renderGroups();
+  renderGroupOptions();
+  renderStats();
+}
+
+function editGroup(id) {
+  const group = getData(storageKeys.groups).find(g => g.id === id);
+  if (!group) return;
+
+  document.getElementById("editGroupId").value = group.id;
+  document.getElementById("groupName").value = group.name;
+  document.getElementById("groupDescription").value = group.description || "";
+}
+
+function deleteGroup(id) {
+  const articles = getData(storageKeys.articles);
+  if (articles.some(a => a.groupId === id)) {
+    showMessage("Impossible de supprimer ce groupe car il est utilisé.", "error");
+    return;
+  }
+
+  const groups = getData(storageKeys.groups).filter(g => g.id !== id);
+  setData(storageKeys.groups, groups);
+  renderGroups();
+  renderGroupOptions();
+  renderStats();
+  showMessage("Groupe supprimé.", "success");
+}
+
+function resetGroupForm() {
+  document.getElementById("editGroupId").value = "";
+  document.getElementById("groupName").value = "";
+  document.getElementById("groupDescription").value = "";
+}
+
+function renderGroupOptions() {
+  const groups = getData(storageKeys.groups);
+  const select = document.getElementById("articleGroup");
+  select.innerHTML = '<option value="">Sélectionner un groupe</option>';
+
+  groups.forEach(group => {
+    const option = document.createElement("option");
+    option.value = group.id;
+    option.textContent = group.name;
+    select.appendChild(option);
+  });
+}
+
+function renderArticles() {
+  const articles = getData(storageKeys.articles);
+  const groups = getData(storageKeys.groups);
+  const tbody = document.getElementById("articlesTableBody");
+  tbody.innerHTML = "";
+
+  articles.forEach(article => {
+    const group = groups.find(g => g.id === article.groupId);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${article.id}</td>
+      <td>${article.name}</td>
+      <td>${formatPrice(article.price)}</td>
+      <td>${article.stock}</td>
+      <td>${group ? group.name : "-"}</td>
+      <td>${article.active ? "Actif" : "Inactif"}</td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="editArticle(${article.id})">Modifier</button>
+          <button class="btn btn-danger" onclick="deleteArticle(${article.id})">Supprimer</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function saveArticle() {
+  const id = document.getElementById("editArticleId").value;
+  const name = document.getElementById("articleName").value.trim();
+  const description = document.getElementById("articleDescription").value.trim();
+  const price = parseFloat(document.getElementById("articlePrice").value);
+  const stock = parseInt(document.getElementById("articleStock").value);
+  const groupId = parseInt(document.getElementById("articleGroup").value);
+  const active = document.getElementById("articleActive").value === "true";
+
+  if (!name || isNaN(price) || isNaN(stock) || isNaN(groupId)) {
+    showMessage("Veuillez remplir tous les champs article.", "error");
+    return;
+  }
+
+  const articles = getData(storageKeys.articles);
+
+  if (id) {
+    const article = articles.find(a => a.id == id);
+    article.name = name;
+    article.description = description;
+    article.price = price;
+    article.stock = stock;
+    article.groupId = groupId;
+    article.active = active;
+    showMessage("Article modifié.", "success");
+  } else {
+    articles.push({
+      id: articles.length ? Math.max(...articles.map(a => a.id)) + 1 : 1,
+      name,
+      description,
+      price,
+      stock,
+      groupId,
+      active
+    });
+    showMessage("Article ajouté.", "success");
+  }
+
+  setData(storageKeys.articles, articles);
+  resetArticleForm();
+  renderArticles();
+  renderStats();
+}
+
+function editArticle(id) {
+  const article = getData(storageKeys.articles).find(a => a.id === id);
+  if (!article) return;
+
+  document.getElementById("editArticleId").value = article.id;
+  document.getElementById("articleName").value = article.name;
+  document.getElementById("articleDescription").value = article.description || "";
+  document.getElementById("articlePrice").value = article.price;
+  document.getElementById("articleStock").value = article.stock;
+  document.getElementById("articleGroup").value = article.groupId;
+  document.getElementById("articleActive").value = String(article.active);
+}
+
+function deleteArticle(id) {
+  const articles = getData(storageKeys.articles).filter(a => a.id !== id);
+  setData(storageKeys.articles, articles);
+  renderArticles();
+  renderStats();
+  showMessage("Article supprimé.", "success");
+}
+
+function resetArticleForm() {
+  document.getElementById("editArticleId").value = "";
+  document.getElementById("articleName").value = "";
+  document.getElementById("articleDescription").value = "";
+  document.getElementById("articlePrice").value = "";
+  document.getElementById("articleStock").value = "";
+  document.getElementById("articleGroup").value = "";
+  document.getElementById("articleActive").value = "true";
+}
+
+function renderClients() {
+  const clients = getData(storageKeys.clients);
+  const tbody = document.getElementById("clientsTableBody");
+  tbody.innerHTML = "";
+
+  clients.forEach(client => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${client.id}</td>
+      <td>${client.nom}</td>
+      <td>${client.prenom}</td>
+      <td>${client.email}</td>
+      <td>${client.phone}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderOrdersAdmin() {
+  const orders = getData(storageKeys.orders);
+  const clients = getData(storageKeys.clients);
+  const tbody = document.getElementById("ordersTableBody");
+  tbody.innerHTML = "";
+
+  orders.forEach(order => {
+    const client = clients.find(c => c.id === order.clientId);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${order.id}</td>
+      <td>${client ? client.prenom + " " + client.nom : "Inconnu"}</td>
+      <td>${formatPrice(order.total)}</td>
+      <td>
+        <select onchange="updateOrderStatus(${order.id}, this.value)">
+          <option value="En attente" ${order.status === "En attente" ? "selected" : ""}>En attente</option>
+          <option value="Validée" ${order.status === "Validée" ? "selected" : ""}>Validée</option>
+          <option value="Expédiée" ${order.status === "Expédiée" ? "selected" : ""}>Expédiée</option>
+          <option value="Livrée" ${order.status === "Livrée" ? "selected" : ""}>Livrée</option>
+          <option value="Annulée" ${order.status === "Annulée" ? "selected" : ""}>Annulée</option>
+        </select>
+      </td>
+      <td>${order.date}</td>
+      <td>${order.details.map(d => d.name + " x" + d.quantity).join(", ")}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateOrderStatus(orderId, status) {
+  const orders = getData(storageKeys.orders);
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+  order.status = status;
+  setData(storageKeys.orders, orders);
+  renderOrdersAdmin();
+  showMessage("Statut mis à jour.", "success");
+}
+
+<!-- =========================
+FICHIER : js/client-register.js
+========================= -->
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("clientRegisterBtn").addEventListener("click", registerClient);
+});
+
+function registerClient() {
+  const nom = document.getElementById("registerNom").value.trim();
+  const prenom = document.getElementById("registerPrenom").value.trim();
+  const email = document.getElementById("registerEmail").value.trim().toLowerCase();
+  const phone = document.getElementById("registerPhone").value.trim();
+  const password = document.getElementById("registerPassword").value.trim();
+
+  if (!nom || !prenom || !email || !phone || !password) {
+    showMessage("Tous les champs sont obligatoires.", "error");
+    return;
+  }
+
+  const clients = getData(storageKeys.clients);
+  if (clients.some(c => c.email === email)) {
+    showMessage("Cet email est déjà utilisé.", "error");
+    return;
+  }
+
+  clients.push({
+    id: clients.length ? Math.max(...clients.map(c => c.id)) + 1 : 1,
+    nom,
+    prenom,
+    email,
+    phone,
+    password
+  });
+
+  setData(storageKeys.clients, clients);
+  showMessage("Compte créé avec succès. Redirection vers la connexion...", "success");
+
+  setTimeout(() => {
+    window.location.href = "client-login.html";
+  }, 1200);
+}
+
+<!-- =========================
+FICHIER : js/client-login.js
+========================= -->
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("clientLoginBtn").addEventListener("click", loginClient);
+});
+
+function loginClient() {
+  const email = document.getElementById("clientLoginEmail").value.trim().toLowerCase();
+  const password = document.getElementById("clientLoginPassword").value.trim();
+
+  const client = getData(storageKeys.clients).find(c => c.email === email && c.password === password);
+
+  if (!client) {
+    showMessage("Connexion client invalide.", "error");
+    return;
+  }
+
+  setSession("client", client.id);
+  window.location.href = "client-dashboard.html";
+}
+
+<!-- =========================
+FICHIER : js/client-dashboard.js
+========================= -->
+document.addEventListener("DOMContentLoaded", () => {
+  requireClient();
+
+  document.getElementById("logoutBtn").addEventListener("click", logout);
+  document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
+
+  renderClientDashboard();
+});
+
+function renderClientDashboard() {
+  const client = getCurrentClient();
+  if (!client) {
+    logout();
+    return;
+  }
+
+  document.getElementById("clientWelcomeText").innerHTML =
+    "Bienvenue <strong>" + client.prenom + " " + client.nom + "</strong> (" + client.email + ")";
+
+  renderClientArticles();
+  renderCart();
+  renderClientOrders();
+}
+
+function renderClientArticles() {
+  const articles = getData(storageKeys.articles).filter(a => a.active && a.stock > 0);
+  const groups = getData(storageKeys.groups);
+  const container = document.getElementById("clientArticlesList");
+  container.innerHTML = "";
+
+  if (!articles.length) {
+    container.innerHTML = "<p>Aucun article disponible.</p>";
+    return;
+  }
+
+  articles.forEach(article => {
+    const group = groups.find(g => g.id === article.groupId);
+    const div = document.createElement("div");
+    div.className = "article-card";
+    div.innerHTML = `
+      <h3>${article.name}</h3>
+      <p>${article.description || ""}</p>
+      <p><span class="badge">${group ? group.name : "Sans groupe"}</span></p>
+      <p><strong>${formatPrice(article.price)}</strong></p>
+      <p>Stock : ${article.stock}</p>
+      <button class="btn btn-primary" onclick="addToCart(${article.id})">Ajouter au panier</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function addToCart(articleId) {
+  const client = getCurrentClient();
+  const articles = getData(storageKeys.articles);
+  const article = articles.find(a => a.id === articleId);
+
+  if (!client || !article || !article.active || article.stock <= 0) {
+    showMessage("Article indisponible.", "error");
+    return;
+  }
+
+  const cart = getCart(client.id);
+  const existing = cart.find(item => item.articleId === articleId);
+
+  if (existing) {
+    if (existing.quantity >= article.stock) {
+      showMessage("Quantité maximale atteinte.", "error");
+      return;
+    }
+    existing.quantity += 1;
+  } else {
+    cart.push({ articleId, quantity: 1 });
+  }
+
+  setCart(client.id, cart);
+  renderCart();
+  showMessage("Article ajouté au panier.", "success");
+}
+
+function renderCart() {
+  const client = getCurrentClient();
+  const articles = getData(storageKeys.articles);
+  const cart = getCart(client.id);
+  const container = document.getElementById("cartList");
+  const totalBox = document.getElementById("cartTotal");
+
+  container.innerHTML = "";
+
+  if (!cart.length) {
+    container.innerHTML = "<p>Panier vide.</p>";
+    totalBox.textContent = "0.00";
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach(item => {
+    const article = articles.find(a => a.id === item.articleId);
+    if (!article) return;
+
+    total += article.price * item.quantity;
+
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <div class="row">
+        <div>
+          <strong>${article.name}</strong><br>
+          <span>${formatPrice(article.price)} x ${item.quantity}</span>
+        </div>
+        <div class="actions">
+          <button class="btn btn-secondary" onclick="changeQty(${article.id}, -1)">-</button>
+          <button class="btn btn-secondary" onclick="changeQty(${article.id}, 1)">+</button>
+          <button class="btn btn-danger" onclick="removeFromCart(${article.id})">Supprimer</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  totalBox.textContent = total.toFixed(2);
+}
+
+function changeQty(articleId, delta) {
+  const client = getCurrentClient();
+  const articles = getData(storageKeys.articles);
+  const article = articles.find(a => a.id === articleId);
+  const cart = getCart(client.id);
+  const item = cart.find(i => i.articleId === articleId);
+
+  if (!item || !article) return;
+
+  item.quantity += delta;
+
+  if (item.quantity <= 0) {
+    setCart(client.id, cart.filter(i => i.articleId !== articleId));
+  } else if (item.quantity > article.stock) {
+    item.quantity = article.stock;
+    setCart(client.id, cart);
+  } else {
+    setCart(client.id, cart);
+  }
+
+  renderCart();
+}
+
+function removeFromCart(articleId) {
+  const client = getCurrentClient();
+  const cart = getCart(client.id).filter(i => i.articleId !== articleId);
+  setCart(client.id, cart);
+  renderCart();
+  showMessage("Article retiré du panier.", "success");
+}
+
+function placeOrder() {
+  const client = getCurrentClient();
+  const cart = getCart(client.id);
+  const articles = getData(storageKeys.articles);
+  const orders = getData(storageKeys.orders);
+
+  if (!cart.length) {
+    showMessage("Le panier est vide.", "error");
+    return;
+  }
+
+  let total = 0;
+  const details = [];
+
+  for (const item of cart) {
+    const article = articles.find(a => a.id === item.articleId);
+
+    if (!article || !article.active) {
+      showMessage("Un article n'est plus disponible.", "error");
+      return;
+    }
+
+    if (article.stock < item.quantity) {
+      showMessage("Stock insuffisant pour " + article.name, "error");
+      return;
+    }
+
+    article.stock -= item.quantity;
+    details.push({
+      articleId: article.id,
+      name: article.name,
+      quantity: item.quantity,
+      price: article.price
+    });
+
+    total += article.price * item.quantity;
+  }
+
+  orders.push({
+    id: orders.length ? Math.max(...orders.map(o => o.id)) + 1 : 1,
+    clientId: client.id,
+    total,
+    status: "En attente",
+    date: new Date().toLocaleString("fr-FR"),
+    details
+  });
+
+  setData(storageKeys.orders, orders);
+  setData(storageKeys.articles, articles);
+  setCart(client.id, []);
+
+  renderClientDashboard();
+  showMessage("Commande validée avec succès.", "success");
+}
+
+function renderClientOrders() {
+  const client = getCurrentClient();
+  const orders = getData(storageKeys.orders).filter(o => o.clientId === client.id);
+  const tbody = document.getElementById("clientOrdersTableBody");
+  tbody.innerHTML = "";
+
+  orders.forEach(order => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${order.id}</td>
+      <td>${formatPrice(order.total)}</td>
+      <td>${order.status}</td>
+      <td>${order.date}</td>
+      <td>${order.details.map(d => d.name + " x" + d.quantity).join(", ")}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
