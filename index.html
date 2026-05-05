@@ -1,1487 +1,1398 @@
 
-<!-- =========================
-FICHIER : index.html
-========================= -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accueil - Gestion Boutique</title>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ktb-import export | Confiseries & Boissons du Monde</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap');
+
+        :root {
+            --primary: #d63384;
+            --primary-dark: #b52a6f;
+            --primary-light: #f8d7e9;
+            --accent: #ff6b6b;
+            --success: #00b894;
+            --dark: #1a1a2e;
+            --gray-900: #212529;
+            --gray-700: #495057;
+            --gray-500: #adb5bd;
+            --gray-200: #e9ecef;
+            --gray-100: #f8f9fa;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== ANNONCE ===== */
+        .announcement {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: var(--white);
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .announcement strong { font-weight: 700; }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.1;
+        }
+        .logo-tagline {
+            font-size: 10px;
+            color: var(--gray-500);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav { display: flex; gap: 32px; list-style: none; }
+        .nav a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            transition: var(--transition);
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        .nav a:hover { color: var(--primary); }
+        .nav a:hover::after { width: 100%; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: 50px;
+            padding: 10px 18px;
+            transition: var(--transition);
+        }
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .search-box i { color: var(--gray-500); font-size: 14px; }
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            width: 200px;
+            color: var(--gray-900);
+        }
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--gray-200);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            font-size: 16px;
+            color: var(--gray-700);
+        }
+        .icon-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--white);
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 100px 24px;
+            overflow: hidden;
+        }
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            opacity: 0.08;
+            font-size: 80px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .hero-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--white);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        .hero-badge i { color: var(--accent); }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #fd79a8, #fab1a0, #ffeaa7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            max-width: 550px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-hero-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-hero-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.4);
+        }
+        .btn-hero-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--white);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .btn-hero-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        /* ===== STATS ===== */
+        .stats {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .stats-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 24px;
+            border-right: 1px solid var(--gray-200);
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .stat-icon.pink { background: var(--primary-light); color: var(--primary); }
+        .stat-icon.green { background: #d4edda; color: #28a745; }
+        .stat-icon.blue { background: #d1ecf1; color: #17a2b8; }
+        .stat-icon.orange { background: #fff3cd; color: #fd7e14; }
+        .stat-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 2px;
+        }
+        .stat-info p {
+            font-size: 12px;
+            color: var(--gray-500);
+            line-height: 1.4;
+        }
+
+        /* ===== CATEGORIES ===== */
+        .categories {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 48px 24px 0;
+        }
+        .categories-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+        .cat-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            white-space: nowrap;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            color: var(--gray-700);
+        }
+        .cat-chip:hover, .cat-chip.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.25);
+        }
+        .cat-chip .cat-emoji { font-size: 16px; }
+
+        /* ===== SECTIONS ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 56px 24px;
+        }
+        .section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+        .section-head-left h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .section-head-left h2 em {
+            font-style: normal;
+            color: var(--primary);
+        }
+        .section-head-left p {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+        .link-all {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            padding: 8px 0;
+        }
+        .link-all:hover { gap: 10px; }
+        .link-all i { font-size: 12px; transition: var(--transition); }
+
+        /* ===== PRODUCT GRID ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid var(--gray-200);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+        .card-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            z-index: 3;
+            color: var(--white);
+        }
+        .card-badge.new { background: var(--success); }
+        .card-badge.promo { background: var(--accent); }
+        .card-badge.hot { background: var(--primary); }
+        .card-wishlist {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--white);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--gray-500);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            z-index: 3;
+        }
+        .card-wishlist:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+        .card-img {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #fafafa, #f0f0f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            position: relative;
+        }
+        .card-body { padding: 20px; }
+        .card-brand {
+            font-size: 11px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 8px 0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 42px;
+        }
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .card-rating i { color: #ffc107; font-size: 12px; }
+        .card-rating span { font-size: 12px; color: var(--gray-500); margin-left: 4px; }
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .card-price .old {
+            font-size: 13px;
+            color: var(--gray-500);
+            text-decoration: line-through;
+            font-weight: 500;
+            display: block;
+            line-height: 1;
+        }
+        .btn-cart {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        .btn-cart:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
+        }
+
+        /* ===== BANNER ===== */
+        .promo-banner {
+            max-width: 1280px;
+            margin: 0 auto 56px;
+            padding: 0 24px;
+        }
+        .promo-banner-inner {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            border-radius: var(--radius-lg);
+            padding: 64px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+        .promo-banner-inner::after {
+            content: '🍫🍬🍭';
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 120px;
+            opacity: 0.08;
+            letter-spacing: 20px;
+        }
+        .promo-content { position: relative; z-index: 2; }
+        .promo-label {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .promo-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .promo-content p {
+            color: rgba(255,255,255,0.65);
+            font-size: 15px;
+            margin-bottom: 24px;
+            max-width: 500px;
+        }
+        .btn-promo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            color: var(--dark);
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .btn-promo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        /* ===== FEATURES ===== */
+        .features-section {
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .features-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 64px 24px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        .feature-card { text-align: center; }
+        .feature-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+        }
+        .feature-icon-wrap.f1 { background: #fce4ec; }
+        .feature-icon-wrap.f2 { background: #e8f5e9; }
+        .feature-icon-wrap.f3 { background: #e3f2fd; }
+        .feature-icon-wrap.f4 { background: #fff8e1; }
+        .feature-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .feature-card p {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.7;
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px 64px;
+        }
+        .newsletter-inner {
+            background: linear-gradient(135deg, var(--primary), #e667a0);
+            border-radius: var(--radius-lg);
+            padding: 64px 48px;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        .newsletter-inner::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            top: -100px;
+            right: -50px;
+        }
+        .newsletter-inner::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            bottom: -80px;
+            left: -40px;
+        }
+        .newsletter-inner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        .newsletter-inner p {
+            opacity: 0.9;
+            margin-bottom: 28px;
+            font-size: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            background: var(--white);
+            color: var(--gray-900);
+        }
+        .newsletter-form button {
+            background: var(--dark);
+            color: var(--white);
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .newsletter-form button:hover { background: #2d2d4e; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 64px 24px 32px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        .footer-brand-desc {
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 16px 0;
+        }
+        .footer-social {
+            display: flex;
+            gap: 10px;
+        }
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        .footer-social a:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .footer-col a {
+            display: block;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+        .footer-col a:hover { color: var(--primary); padding-left: 4px; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        .footer-payments {
+            display: flex;
+            gap: 8px;
+        }
+        .footer-payments span {
+            background: rgba(255,255,255,0.08);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray-900);
+            cursor: pointer;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .stats-inner { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(2) { border-right: none; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav { display: none; }
+            .mobile-toggle { display: block; }
+            .search-box input { width: 120px; }
+            .hero h1 { font-size: 36px; }
+            .hero p { font-size: 15px; }
+            .stats-inner { grid-template-columns: 1fr; }
+            .stat-item { border-right: none; border-bottom: 1px solid var(--gray-200); }
+            .stat-item:last-child { border-bottom: none; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .card-img { height: 160px; font-size: 52px; }
+            .promo-banner-inner { padding: 40px 24px; flex-direction: column; text-align: center; }
+            .promo-content h2 { font-size: 28px; }
+            .features-grid { grid-template-columns: 1fr; gap: 32px; }
+            .newsletter-inner { padding: 40px 24px; }
+            .newsletter-form { flex-direction: column; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .section-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .btn-login { display: none; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 28px; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .card-body { padding: 14px; }
+            .card-price { font-size: 16px; }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <div class="container topbar">
-      <h1>Gestion Boutique</h1>
-      <nav class="nav">
-        <a href="index.html">Accueil</a>
-        <a href="admin-login.html">Connexion admin</a>
-        <a href="client-login.html">Connexion client</a>
-        <a href="client-register.html">Inscription client</a>
-      </nav>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="card center">
-      <h2>Bienvenue</h2>
-      <p>Application de gestion avec :</p>
-      <ul class="list">
-        <li>Connexion administrateur</li>
-        <li>Changement du mot de passe admin</li>
-        <li>Gestion des groupes</li>
-        <li>Gestion des articles</li>
-        <li>Création de comptes clients</li>
-        <li>Panier et commandes</li>
-      </ul>
-      <div class="actions center-actions">
-        <a class="btn btn-primary" href="admin-login.html">Espace admin</a>
-        <a class="btn btn-success" href="client-login.html">Espace client</a>
-      </div>
+    <!-- ANNONCE -->
+    <div class="announcement">
+        <strong>🚀 Livraison offerte</strong> dès 49 € d'achat — <strong>+2 000 produits</strong> importés des USA, du Japon et du Royaume-Uni
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">K</div>
+                <div class="logo-text">
+                    <span class="logo-name">Ktb-import export</span>
+                    <span class="logo-tagline">Confiseries & boissons du monde</span>
+                </div>
+            </a>
+
+            <ul class="nav">
+                <li><a href="#">Nouveautés</a></li>
+                <li><a href="#">Confiseries</a></li>
+                <li><a href="#">Boissons</a></li>
+                <li><a href="#">Snacks</a></li>
+                <li><a href="#">Chocolats</a></li>
+                <li><a href="#">Promotions</a></li>
+            </ul>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher un produit…">
+                </div>
+                <button class="icon-btn"><i class="far fa-user"></i></button>
+                <button class="icon-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="badge">3</span>
+                </button>
+                <button class="btn-primary btn-login">Connexion</button>
+                <button class="mobile-toggle"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-particles">🍬 🍭 🍫 🥤 🍿 🧁 🍩 🍪 🍬 🍭 🍫 🥤</div>
+        <div class="hero-inner">
+            <div class="hero-badge"><i class="fas fa-fire"></i> Plus de 2 000 références importées</div>
+            <h1>Saveurs <span class="gradient-text">du monde entier</span> livrées chez vous</h1>
+            <p>Explorez notre sélection exclusive de confiseries, snacks et boissons importés directement des États-Unis, du Japon et du Royaume-Uni.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-hero-primary">
+                    Découvrir la boutique <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#" class="btn-hero-secondary">
+                    <i class="fas fa-play-circle"></i> Nos meilleures ventes
+                </a>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-</body>
-</html>
-
-<!-- =========================
-FICHIER : admin-login.html
-========================= -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connexion Admin</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container topbar">
-      <h1>Connexion Admin</h1>
-      <nav class="nav">
-        <a href="index.html">Accueil</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container">
-    <div id="messageBox"></div>
-
-    <section class="card form-card">
-      <h2>Se connecter en tant qu'administrateur</h2>
-      <p class="small">Compte par défaut : <strong>admin</strong> / <strong>admin</strong></p>
-
-      <label>Identifiant</label>
-      <input type="text" id="adminUsername" placeholder="admin" />
-
-      <label>Mot de passe</label>
-      <input type="password" id="adminPassword" placeholder="Mot de passe" />
-
-      <button class="btn btn-primary" id="adminLoginBtn">Connexion</button>
-    </section>
-  </main>
-
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/admin-login.js"></script>
-</body>
-</html>
-
-<!-- =========================
-FICHIER : admin-dashboard.html
-========================= -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableau de bord Admin</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container topbar">
-      <h1>Administration</h1>
-      <nav class="nav">
-        <a href="index.html">Accueil</a>
-        <button class="btn btn-danger nav-btn" id="logoutBtn">Déconnexion</button>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container">
-    <div id="messageBox"></div>
-
+    <!-- STATS -->
     <section class="stats">
-      <div class="stat-box">
-        <h3>Articles</h3>
-        <p id="statArticles">0</p>
-      </div>
-      <div class="stat-box">
-        <h3>Groupes</h3>
-        <p id="statGroups">0</p>
-      </div>
-      <div class="stat-box">
-        <h3>Clients</h3>
-        <p id="statClients">0</p>
-      </div>
-      <div class="stat-box">
-        <h3>Commandes</h3>
-        <p id="statOrders">0</p>
-      </div>
+        <div class="stats-inner">
+            <div class="stat-item">
+                <div class="stat-icon pink"><i class="fas fa-truck-fast"></i></div>
+                <div class="stat-info">
+                    <h4>Livraison rapide</h4>
+                    <p>Expédition sous 24 à 48 h</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon green"><i class="fas fa-shield-halved"></i></div>
+                <div class="stat-info">
+                    <h4>Paiement sécurisé</h4>
+                    <p>CB, PayPal, Apple Pay</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon blue"><i class="fas fa-earth-americas"></i></div>
+                <div class="stat-info">
+                    <h4>Importation directe</h4>
+                    <p>USA, Japon, Royaume-Uni</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon orange"><i class="fas fa-star"></i></div>
+                <div class="stat-info">
+                    <h4>Qualité garantie</h4>
+                    <p>Produits rigoureusement sélectionnés</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="card">
-      <h2>Modifier le mot de passe admin</h2>
-      <div class="grid-2">
-        <div>
-          <label>Ancien mot de passe</label>
-          <input type="password" id="oldAdminPassword" />
+    <!-- CATEGORIES -->
+    <div class="categories">
+        <div class="categories-scroll">
+            <a href="#" class="cat-chip active"><span class="cat-emoji">🔥</span> Tendances</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🍬</span> Bonbons</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🍫</span> Chocolats</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🥤</span> Boissons</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🍿</span> Snacks</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🇯🇵</span> Japon</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🇺🇸</span> États-Unis</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🇬🇧</span> Royaume-Uni</a>
+            <a href="#" class="cat-chip"><span class="cat-emoji">🥜</span> Biscuits</a>
         </div>
-        <div>
-          <label>Nouveau mot de passe</label>
-          <input type="password" id="newAdminPassword" />
-        </div>
-      </div>
-      <button class="btn btn-primary mt" id="changeAdminPasswordBtn">Mettre à jour</button>
-    </section>
-
-    <section class="card">
-      <h2>Gestion des groupes</h2>
-      <input type="hidden" id="editGroupId" />
-      <div class="grid-2">
-        <div>
-          <label>Nom du groupe</label>
-          <input type="text" id="groupName" />
-        </div>
-        <div>
-          <label>Description</label>
-          <input type="text" id="groupDescription" />
-        </div>
-      </div>
-      <div class="actions mt">
-        <button class="btn btn-success" id="saveGroupBtn">Ajouter / Enregistrer</button>
-        <button class="btn btn-secondary" id="resetGroupBtn">Réinitialiser</button>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="groupsTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Gestion des articles</h2>
-      <input type="hidden" id="editArticleId" />
-      <div class="grid-2">
-        <div>
-          <label>Nom de l'article</label>
-          <input type="text" id="articleName" />
-        </div>
-        <div>
-          <label>Prix</label>
-          <input type="number" id="articlePrice" min="0" step="0.01" />
-        </div>
-      </div>
-
-      <div class="grid-2 mt">
-        <div>
-          <label>Stock</label>
-          <input type="number" id="articleStock" min="0" />
-        </div>
-        <div>
-          <label>Groupe</label>
-          <select id="articleGroup"></select>
-        </div>
-      </div>
-
-      <div class="mt">
-        <label>Description</label>
-        <textarea id="articleDescription"></textarea>
-      </div>
-
-      <div class="mt">
-        <label>Statut</label>
-        <select id="articleActive">
-          <option value="true">Actif</option>
-          <option value="false">Inactif</option>
-        </select>
-      </div>
-
-      <div class="actions mt">
-        <button class="btn btn-success" id="saveArticleBtn">Ajouter / Enregistrer</button>
-        <button class="btn btn-secondary" id="resetArticleBtn">Réinitialiser</button>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Prix</th>
-              <th>Stock</th>
-              <th>Groupe</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="articlesTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Liste des clients</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Email</th>
-              <th>Téléphone</th>
-            </tr>
-          </thead>
-          <tbody id="clientsTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Gestion des commandes</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Client</th>
-              <th>Total</th>
-              <th>Statut</th>
-              <th>Date</th>
-              <th>Détails</th>
-            </tr>
-          </thead>
-          <tbody id="ordersTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/admin-dashboard.js"></script>
-</body>
-</html>
-
-<!-- =========================
-FICHIER : client-register.html
-========================= -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inscription Client</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container topbar">
-      <h1>Inscription Client</h1>
-      <nav class="nav">
-        <a href="index.html">Accueil</a>
-        <a href="client-login.html">Connexion client</a>
-      </nav>
     </div>
-  </header>
 
-  <main class="container">
-    <div id="messageBox"></div>
-
-    <section class="card form-card">
-      <h2>Créer un compte client</h2>
-
-      <div class="grid-2">
-        <div>
-          <label>Nom</label>
-          <input type="text" id="registerNom" />
+    <!-- NOUVEAUTÉS -->
+    <section class="container">
+        <div class="section-head">
+            <div class="section-head-left">
+                <h2>Nos <em>nouveautés</em></h2>
+                <p>Les derniers arrivages de la semaine</p>
+            </div>
+            <a href="#" class="link-all">Tout afficher <i class="fas fa-arrow-right"></i></a>
         </div>
-        <div>
-          <label>Prénom</label>
-          <input type="text" id="registerPrenom" />
+        <div class="grid">
+            <div class="card">
+                <span class="card-badge new">Nouveau</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🥤</div>
+                <div class="card-body">
+                    <div class="card-brand">Red Bull</div>
+                    <div class="card-title">Red Bull The Organics Tonic Water — 24 × 33 cl</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span>(24)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">34,90 €</div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge new">Nouveau</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍫</div>
+                <div class="card-body">
+                    <div class="card-brand">Reese's</div>
+                    <div class="card-title">Reese's Nutrageous Bar — 18 × 47 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        <span>(18)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">28,50 €</div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge new">Nouveau</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍬</div>
+                <div class="card-body">
+                    <div class="card-brand">Jelly Belly</div>
+                    <div class="card-title">Jelly Belly Bean Boozled — 24 × 45 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span>(42)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">42,90 €</div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge new">Nouveau</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍫</div>
+                <div class="card-body">
+                    <div class="card-brand">M&amp;M's</div>
+                    <div class="card-title">M&amp;M's Brownie — 18 × 35 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span>(31)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">22,90 €</div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge new">Nouveau</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🥤</div>
+                <div class="card-body">
+                    <div class="card-brand">Fanta</div>
+                    <div class="card-title">Fanta Mango — 24 × 330 ml</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        <span>(15)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">29,90 €</div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="grid-2 mt">
-        <div>
-          <label>Email</label>
-          <input type="email" id="registerEmail" />
-        </div>
-        <div>
-          <label>Téléphone</label>
-          <input type="text" id="registerPhone" />
-        </div>
-      </div>
-
-      <div class="mt">
-        <label>Mot de passe</label>
-        <input type="password" id="registerPassword" />
-      </div>
-
-      <button class="btn btn-success mt" id="clientRegisterBtn">Créer un compte</button>
     </section>
-  </main>
 
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/client-register.js"></script>
-</body>
-</html>
-
-<!-- =========================
-FICHIER : client-login.html
-========================= -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connexion Client</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container topbar">
-      <h1>Connexion Client</h1>
-      <nav class="nav">
-        <a href="index.html">Accueil</a>
-        <a href="client-register.html">Inscription</a>
-      </nav>
+    <!-- BANNER PROMO -->
+    <div class="promo-banner">
+        <div class="promo-banner-inner">
+            <div class="promo-content">
+                <span class="promo-label">🔥 Tendance</span>
+                <h2>Chocolat Dubai — La collection exclusive</h2>
+                <p>Découvrez nos tablettes au kayadif, à la pistache et bien d'autres saveurs d'exception.</p>
+                <a href="#" class="btn-promo">Voir la collection <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <div id="messageBox"></div>
-
-    <section class="card form-card">
-      <h2>Se connecter</h2>
-
-      <label>Email</label>
-      <input type="email" id="clientLoginEmail" />
-
-      <label>Mot de passe</label>
-      <input type="password" id="clientLoginPassword" />
-
-      <button class="btn btn-primary" id="clientLoginBtn">Connexion client</button>
+    <!-- PROMOTIONS -->
+    <section class="container" style="padding-top: 0;">
+        <div class="section-head">
+            <div class="section-head-left">
+                <h2>Promotions <em>en cours</em></h2>
+                <p>Profitez de réductions exceptionnelles</p>
+            </div>
+            <a href="#" class="link-all">Tout afficher <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <span class="card-badge promo">−30 %</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍫</div>
+                <div class="card-body">
+                    <div class="card-brand">iConiksweet</div>
+                    <div class="card-title">Tablette Chocolat Dubai Kayadif au lait et Bueno — 12 × 200 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span>(56)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">
+                            <span class="old">71,28 €</span>
+                            49,90 €
+                        </div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge promo">−30 %</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍫</div>
+                <div class="card-body">
+                    <div class="card-brand">iConiksweet</div>
+                    <div class="card-title">Tablette Chocolat Dubai blanc et pistache — 12 × 100 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span>(38)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">
+                            <span class="old">51,28 €</span>
+                            35,90 €
+                        </div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge promo">−28 %</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍬</div>
+                <div class="card-body">
+                    <div class="card-brand">Oufti</div>
+                    <div class="card-title">Oufti Fraise — 24 × 60 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        <span>(12)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">
+                            <span class="old">26,25 €</span>
+                            18,90 €
+                        </div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-badge promo">−28 %</span>
+                <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                <div class="card-img">🍌</div>
+                <div class="card-body">
+                    <div class="card-brand">Oufti</div>
+                    <div class="card-title">Oufti Banane Spéculoos — 24 × 70 g</div>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        <span>(9)</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">
+                            <span class="old">27,60 €</span>
+                            19,90 €
+                        </div>
+                        <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/client-login.js"></script>
-</body>
-</html>
+    <!-- MEILLEURES VENTES -->
+    <section class="container" style="background: var(--white); max-width: 100%; padding-left: 0; padding-right: 0;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+            <div class="section-head">
+                <div class="section-head-left">
+                    <h2>Meilleures <em>ventes</em></h2>
+                    <p>Les produits préférés de nos clients</p>
+                </div>
+                <a href="#" class="link-all">Tout afficher <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-badge hot">Populaire</span>
+                    <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                    <div class="card-img">🥜</div>
+                    <div class="card-body">
+                        <div class="card-brand">iConiksweet</div>
+                        <div class="card-title">Buenos Dias — Crème de pistache et bâtonnets — 24 × 55 g</div>
+                        <div class="card-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span>(67)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price">39,90 €</div>
+                            <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="card-badge hot">Populaire</span>
+                    <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                    <div class="card-img">🍓</div>
+                    <div class="card-body">
+                        <div class="card-brand">iConiksweet</div>
+                        <div class="card-title">Buenos Dias — Crème de fraise et bâtonnets — 24 × 55 g</div>
+                        <div class="card-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span>(45)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price">39,90 €</div>
+                            <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                    <div class="card-img">🍫</div>
+                    <div class="card-body">
+                        <div class="card-brand">Bounty</div>
+                        <div class="card-title">Bounty Protein Chocolate — 12 × 52 g</div>
+                        <div class="card-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            <span>(22)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price">24,90 €</div>
+                            <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                    <div class="card-img">🥤</div>
+                    <div class="card-body">
+                        <div class="card-brand">Fanta</div>
+                        <div class="card-title">Fanta White Peach Japan — 24 × 300 ml</div>
+                        <div class="card-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span>(53)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price">45,90 €</div>
+                            <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <button class="card-wishlist"><i class="far fa-heart"></i></button>
+                    <div class="card-img">🍪</div>
+                    <div class="card-body">
+                        <div class="card-brand">iConiksweet</div>
+                        <div class="card-title">Buenos Dias — Crème de spéculoos et bâtonnets — 24 × 55 g</div>
+                        <div class="card-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            <span>(19)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price">39,90 €</div>
+                            <button class="btn-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- =========================
-FICHIER : client-dashboard.html
-========================= -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Espace Client</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container topbar">
-      <h1>Espace Client</h1>
-      <nav class="nav">
-        <a href="index.html">Accueil</a>
-        <button class="btn btn-danger nav-btn" id="logoutBtn">Déconnexion</button>
-      </nav>
+    <!-- FEATURES -->
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-wrap f1">🚚</div>
+                <h3>Livraison rapide</h3>
+                <p>Expédition sous 24 à 48 heures vers toute la France métropolitaine et l'outre-mer.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrap f2">🔒</div>
+                <h3>Paiement sécurisé</h3>
+                <p>Transactions protégées par les dernières normes de sécurité. CB, PayPal, Apple Pay.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrap f3">🌍</div>
+                <h3>Produits du monde</h3>
+                <p>Une sélection unique de confiseries et boissons importées des quatre coins du globe.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrap f4">⭐</div>
+                <h3>Qualité garantie</h3>
+                <p>Chaque produit est rigoureusement sélectionné pour vous garantir une qualité irréprochable.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <div class="newsletter">
+        <div class="newsletter-inner">
+            <h2>Restez informé</h2>
+            <p>Inscrivez-vous à notre lettre d'information pour recevoir nos offres exclusives et nos dernières nouveautés.</p>
+            <div class="newsletter-form">
+                <input type="email" placeholder="Votre adresse courriel…">
+                <button>S'inscrire</button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <div id="messageBox"></div>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="margin-bottom: 8px;">
+                        <div class="logo-icon">K</div>
+                        <div class="logo-text">
+                            <span class="logo-name" style="color: white;">Ktb-import export</span>
+                            <span class="logo-tagline">Confiseries & boissons du monde</span>
+                        </div>
+                    </a>
+                    <p class="footer-brand-desc">Votre destination de référence pour les confiseries, les snacks et les boissons importés du monde entier. Qualité, rapidité et saveurs garanties.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Boutique</h4>
+                    <a href="#">Nouveautés</a>
+                    <a href="#">Meilleures ventes</a>
+                    <a href="#">Promotions</a>
+                    <a href="#">Toutes les catégories</a>
+                    <a href="#">Nos marques</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Informations</h4>
+                    <a href="#">À propos de nous</a>
+                    <a href="#">Livraison</a>
+                    <a href="#">Retours et remboursements</a>
+                    <a href="#">Foire aux questions</a>
+                    <a href="#">Nous contacter</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Mentions légales</h4>
+                    <a href="#">Conditions générales de vente</a>
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Mentions légales</a>
+                    <a href="#">Gestion des témoins de connexion</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 Ktb-import export. Tous droits réservés.</span>
+                <div class="footer-payments">
+                    <span><i class="fab fa-cc-visa"></i> Visa</span>
+                    <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
+                    <span><i class="fab fa-cc-paypal"></i> PayPal</span>
+                    <span><i class="fab fa-cc-apple-pay"></i> Apple Pay</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <section class="card">
-      <h2 id="clientWelcomeText">Bienvenue</h2>
-    </section>
-
-    <section class="grid-2">
-      <div class="card">
-        <h2>Articles disponibles</h2>
-        <div id="clientArticlesList" class="articles-grid"></div>
-      </div>
-
-      <div class="card">
-        <h2>Mon panier</h2>
-        <div id="cartList"></div>
-        <p class="total-line">Total : <strong><span id="cartTotal">0.00</span> €</strong></p>
-        <button class="btn btn-success" id="placeOrderBtn">Valider la commande</button>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Mes commandes</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Total</th>
-              <th>Statut</th>
-              <th>Date</th>
-              <th>Détails</th>
-            </tr>
-          </thead>
-          <tbody id="clientOrdersTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/client-dashboard.js"></script>
 </body>
 </html>
-
-<!-- =========================
-FICHIER : css/style.css
-========================= -->
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  background: #f4f7fb;
-  color: #1f2937;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.header {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: white;
-  padding: 18px 0;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.nav {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.nav-btn {
-  width: auto;
-}
-
-.card {
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #dbe3ef;
-}
-
-.form-card {
-  max-width: 520px;
-  margin: 30px auto;
-}
-
-.center {
-  text-align: center;
-}
-
-.center-actions {
-  justify-content: center;
-}
-
-h1, h2, h3 {
-  margin-bottom: 14px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-input, select, textarea, button {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid #dbe3ef;
-  border-radius: 10px;
-  font-size: 14px;
-}
-
-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.btn {
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.btn-primary {
-  background: #2563eb;
-  color: white;
-}
-
-.btn-success {
-  background: #16a34a;
-  color: white;
-}
-
-.btn-danger {
-  background: #dc2626;
-  color: white;
-}
-
-.btn-secondary {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
-
-.mt {
-  margin-top: 14px;
-}
-
-.small {
-  color: #6b7280;
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.list {
-  margin: 12px 0 20px 20px;
-  text-align: left;
-  display: inline-block;
-}
-
-.message {
-  padding: 12px 14px;
-  border-radius: 10px;
-  margin-bottom: 16px;
-}
-
-.success {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.error {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.stat-box {
-  background: white;
-  border-radius: 14px;
-  padding: 18px;
-  border: 1px solid #dbe3ef;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-}
-
-.stat-box p {
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.table-wrap {
-  overflow-x: auto;
-  margin-top: 14px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 700px;
-}
-
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid #dbe3ef;
-  text-align: left;
-  vertical-align: top;
-}
-
-th {
-  background: #eff6ff;
-}
-
-.articles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-}
-
-.article-card {
-  border: 1px solid #dbe3ef;
-  border-radius: 12px;
-  padding: 14px;
-}
-
-.article-card p {
-  margin: 6px 0;
-  color: #4b5563;
-}
-
-.total-line {
-  margin: 14px 0;
-}
-
-.badge {
-  display: inline-block;
-  background: #dbeafe;
-  color: #1d4ed8;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.cart-item {
-  border: 1px solid #dbe3ef;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 10px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.hidden {
-  display: none;
-}
-
-<!-- =========================
-FICHIER : js/storage.js
-========================= -->
-const storageKeys = {
-  admins: "app_admins",
-  groups: "app_groups",
-  articles: "app_articles",
-  clients: "app_clients",
-  orders: "app_orders",
-  session: "app_session"
-};
-
-function getData(key, fallback = []) {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : fallback;
-}
-
-function setData(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-function initDefaultData() {
-  if (!localStorage.getItem(storageKeys.admins)) {
-    setData(storageKeys.admins, [
-      { id: 1, username: "admin", password: "admin", mustChangePassword: true }
-    ]);
-  }
-
-  if (!localStorage.getItem(storageKeys.groups)) {
-    setData(storageKeys.groups, [
-      { id: 1, name: "Boissons", description: "Toutes les boissons" },
-      { id: 2, name: "Snacks", description: "Petits produits à grignoter" }
-    ]);
-  }
-
-  if (!localStorage.getItem(storageKeys.articles)) {
-    setData(storageKeys.articles, [
-      { id: 1, name: "Coca Cola", description: "Boisson gazeuse", price: 2.5, stock: 20, groupId: 1, active: true },
-      { id: 2, name: "Chips", description: "Snack salé", price: 1.8, stock: 35, groupId: 2, active: true }
-    ]);
-  }
-
-  if (!localStorage.getItem(storageKeys.clients)) {
-    setData(storageKeys.clients, []);
-  }
-
-  if (!localStorage.getItem(storageKeys.orders)) {
-    setData(storageKeys.orders, []);
-  }
-
-  if (!localStorage.getItem(storageKeys.session)) {
-    setData(storageKeys.session, { type: null, userId: null });
-  }
-}
-
-function setSession(type, userId) {
-  setData(storageKeys.session, { type, userId });
-}
-
-function getSession() {
-  return getData(storageKeys.session, { type: null, userId: null });
-}
-
-function logout() {
-  setSession(null, null);
-  window.location.href = "index.html";
-}
-
-function getCartKey(clientId) {
-  return "cart_client_" + clientId;
-}
-
-function getCart(clientId) {
-  return getData(getCartKey(clientId), []);
-}
-
-function setCart(clientId, cart) {
-  setData(getCartKey(clientId), cart);
-}
-
-initDefaultData();
-
-<!-- =========================
-FICHIER : js/app.js
-========================= -->
-function showMessage(text, type = "success") {
-  const box = document.getElementById("messageBox");
-  if (!box) return;
-  box.innerHTML = '<div class="message ' + type + '">' + text + '</div>';
-  setTimeout(() => {
-    box.innerHTML = "";
-  }, 3500);
-}
-
-function requireAdmin() {
-  const session = getSession();
-  if (session.type !== "admin") {
-    window.location.href = "admin-login.html";
-  }
-}
-
-function requireClient() {
-  const session = getSession();
-  if (session.type !== "client") {
-    window.location.href = "client-login.html";
-  }
-}
-
-function getCurrentClient() {
-  const session = getSession();
-  return getData(storageKeys.clients).find(c => c.id === session.userId);
-}
-
-function getCurrentAdmin() {
-  const session = getSession();
-  return getData(storageKeys.admins).find(a => a.id === session.userId);
-}
-
-function formatPrice(value) {
-  return Number(value).toFixed(2) + " €";
-}
-
-<!-- =========================
-FICHIER : js/admin-login.js
-========================= -->
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("adminLoginBtn");
-
-  btn.addEventListener("click", () => {
-    const username = document.getElementById("adminUsername").value.trim();
-    const password = document.getElementById("adminPassword").value.trim();
-    const admins = getData(storageKeys.admins);
-    const admin = admins.find(a => a.username === username && a.password === password);
-
-    if (!admin) {
-      showMessage("Identifiants administrateur invalides.", "error");
-      return;
-    }
-
-    setSession("admin", admin.id);
-    window.location.href = "admin-dashboard.html";
-  });
-});
-
-<!-- =========================
-FICHIER : js/admin-dashboard.js
-========================= -->
-document.addEventListener("DOMContentLoaded", () => {
-  requireAdmin();
-
-  document.getElementById("logoutBtn").addEventListener("click", logout);
-  document.getElementById("changeAdminPasswordBtn").addEventListener("click", changeAdminPassword);
-  document.getElementById("saveGroupBtn").addEventListener("click", saveGroup);
-  document.getElementById("resetGroupBtn").addEventListener("click", resetGroupForm);
-  document.getElementById("saveArticleBtn").addEventListener("click", saveArticle);
-  document.getElementById("resetArticleBtn").addEventListener("click", resetArticleForm);
-
-  renderStats();
-  renderGroupOptions();
-  renderGroups();
-  renderArticles();
-  renderClients();
-  renderOrdersAdmin();
-
-  const admin = getCurrentAdmin();
-  if (admin && admin.mustChangePassword) {
-    showMessage("Première connexion détectée. Veuillez modifier le mot de passe admin.", "success");
-  }
-});
-
-function renderStats() {
-  document.getElementById("statArticles").textContent = getData(storageKeys.articles).length;
-  document.getElementById("statGroups").textContent = getData(storageKeys.groups).length;
-  document.getElementById("statClients").textContent = getData(storageKeys.clients).length;
-  document.getElementById("statOrders").textContent = getData(storageKeys.orders).length;
-}
-
-function changeAdminPassword() {
-  const admins = getData(storageKeys.admins);
-  const admin = getCurrentAdmin();
-  const oldPassword = document.getElementById("oldAdminPassword").value;
-  const newPassword = document.getElementById("newAdminPassword").value;
-
-  if (!admin) return;
-
-  if (admin.password !== oldPassword) {
-    showMessage("Ancien mot de passe incorrect.", "error");
-    return;
-  }
-
-  if (newPassword.length < 4) {
-    showMessage("Le nouveau mot de passe doit contenir au moins 4 caractères.", "error");
-    return;
-  }
-
-  const found = admins.find(a => a.id === admin.id);
-  found.password = newPassword;
-  found.mustChangePassword = false;
-  setData(storageKeys.admins, admins);
-
-  document.getElementById("oldAdminPassword").value = "";
-  document.getElementById("newAdminPassword").value = "";
-  showMessage("Mot de passe modifié avec succès.", "success");
-}
-
-function renderGroups() {
-  const groups = getData(storageKeys.groups);
-  const tbody = document.getElementById("groupsTableBody");
-  tbody.innerHTML = "";
-
-  groups.forEach(group => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${group.id}</td>
-      <td>${group.name}</td>
-      <td>${group.description || ""}</td>
-      <td>
-        <div class="actions">
-          <button class="btn btn-primary" onclick="editGroup(${group.id})">Modifier</button>
-          <button class="btn btn-danger" onclick="deleteGroup(${group.id})">Supprimer</button>
-        </div>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function saveGroup() {
-  const id = document.getElementById("editGroupId").value;
-  const name = document.getElementById("groupName").value.trim();
-  const description = document.getElementById("groupDescription").value.trim();
-
-  if (!name) {
-    showMessage("Le nom du groupe est obligatoire.", "error");
-    return;
-  }
-
-  const groups = getData(storageKeys.groups);
-
-  if (id) {
-    const group = groups.find(g => g.id == id);
-    group.name = name;
-    group.description = description;
-    showMessage("Groupe modifié.", "success");
-  } else {
-    groups.push({
-      id: groups.length ? Math.max(...groups.map(g => g.id)) + 1 : 1,
-      name,
-      description
-    });
-    showMessage("Groupe ajouté.", "success");
-  }
-
-  setData(storageKeys.groups, groups);
-  resetGroupForm();
-  renderGroups();
-  renderGroupOptions();
-  renderStats();
-}
-
-function editGroup(id) {
-  const group = getData(storageKeys.groups).find(g => g.id === id);
-  if (!group) return;
-
-  document.getElementById("editGroupId").value = group.id;
-  document.getElementById("groupName").value = group.name;
-  document.getElementById("groupDescription").value = group.description || "";
-}
-
-function deleteGroup(id) {
-  const articles = getData(storageKeys.articles);
-  if (articles.some(a => a.groupId === id)) {
-    showMessage("Impossible de supprimer ce groupe car il est utilisé.", "error");
-    return;
-  }
-
-  const groups = getData(storageKeys.groups).filter(g => g.id !== id);
-  setData(storageKeys.groups, groups);
-  renderGroups();
-  renderGroupOptions();
-  renderStats();
-  showMessage("Groupe supprimé.", "success");
-}
-
-function resetGroupForm() {
-  document.getElementById("editGroupId").value = "";
-  document.getElementById("groupName").value = "";
-  document.getElementById("groupDescription").value = "";
-}
-
-function renderGroupOptions() {
-  const groups = getData(storageKeys.groups);
-  const select = document.getElementById("articleGroup");
-  select.innerHTML = '<option value="">Sélectionner un groupe</option>';
-
-  groups.forEach(group => {
-    const option = document.createElement("option");
-    option.value = group.id;
-    option.textContent = group.name;
-    select.appendChild(option);
-  });
-}
-
-function renderArticles() {
-  const articles = getData(storageKeys.articles);
-  const groups = getData(storageKeys.groups);
-  const tbody = document.getElementById("articlesTableBody");
-  tbody.innerHTML = "";
-
-  articles.forEach(article => {
-    const group = groups.find(g => g.id === article.groupId);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${article.id}</td>
-      <td>${article.name}</td>
-      <td>${formatPrice(article.price)}</td>
-      <td>${article.stock}</td>
-      <td>${group ? group.name : "-"}</td>
-      <td>${article.active ? "Actif" : "Inactif"}</td>
-      <td>
-        <div class="actions">
-          <button class="btn btn-primary" onclick="editArticle(${article.id})">Modifier</button>
-          <button class="btn btn-danger" onclick="deleteArticle(${article.id})">Supprimer</button>
-        </div>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function saveArticle() {
-  const id = document.getElementById("editArticleId").value;
-  const name = document.getElementById("articleName").value.trim();
-  const description = document.getElementById("articleDescription").value.trim();
-  const price = parseFloat(document.getElementById("articlePrice").value);
-  const stock = parseInt(document.getElementById("articleStock").value);
-  const groupId = parseInt(document.getElementById("articleGroup").value);
-  const active = document.getElementById("articleActive").value === "true";
-
-  if (!name || isNaN(price) || isNaN(stock) || isNaN(groupId)) {
-    showMessage("Veuillez remplir tous les champs article.", "error");
-    return;
-  }
-
-  const articles = getData(storageKeys.articles);
-
-  if (id) {
-    const article = articles.find(a => a.id == id);
-    article.name = name;
-    article.description = description;
-    article.price = price;
-    article.stock = stock;
-    article.groupId = groupId;
-    article.active = active;
-    showMessage("Article modifié.", "success");
-  } else {
-    articles.push({
-      id: articles.length ? Math.max(...articles.map(a => a.id)) + 1 : 1,
-      name,
-      description,
-      price,
-      stock,
-      groupId,
-      active
-    });
-    showMessage("Article ajouté.", "success");
-  }
-
-  setData(storageKeys.articles, articles);
-  resetArticleForm();
-  renderArticles();
-  renderStats();
-}
-
-function editArticle(id) {
-  const article = getData(storageKeys.articles).find(a => a.id === id);
-  if (!article) return;
-
-  document.getElementById("editArticleId").value = article.id;
-  document.getElementById("articleName").value = article.name;
-  document.getElementById("articleDescription").value = article.description || "";
-  document.getElementById("articlePrice").value = article.price;
-  document.getElementById("articleStock").value = article.stock;
-  document.getElementById("articleGroup").value = article.groupId;
-  document.getElementById("articleActive").value = String(article.active);
-}
-
-function deleteArticle(id) {
-  const articles = getData(storageKeys.articles).filter(a => a.id !== id);
-  setData(storageKeys.articles, articles);
-  renderArticles();
-  renderStats();
-  showMessage("Article supprimé.", "success");
-}
-
-function resetArticleForm() {
-  document.getElementById("editArticleId").value = "";
-  document.getElementById("articleName").value = "";
-  document.getElementById("articleDescription").value = "";
-  document.getElementById("articlePrice").value = "";
-  document.getElementById("articleStock").value = "";
-  document.getElementById("articleGroup").value = "";
-  document.getElementById("articleActive").value = "true";
-}
-
-function renderClients() {
-  const clients = getData(storageKeys.clients);
-  const tbody = document.getElementById("clientsTableBody");
-  tbody.innerHTML = "";
-
-  clients.forEach(client => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${client.id}</td>
-      <td>${client.nom}</td>
-      <td>${client.prenom}</td>
-      <td>${client.email}</td>
-      <td>${client.phone}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function renderOrdersAdmin() {
-  const orders = getData(storageKeys.orders);
-  const clients = getData(storageKeys.clients);
-  const tbody = document.getElementById("ordersTableBody");
-  tbody.innerHTML = "";
-
-  orders.forEach(order => {
-    const client = clients.find(c => c.id === order.clientId);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${order.id}</td>
-      <td>${client ? client.prenom + " " + client.nom : "Inconnu"}</td>
-      <td>${formatPrice(order.total)}</td>
-      <td>
-        <select onchange="updateOrderStatus(${order.id}, this.value)">
-          <option value="En attente" ${order.status === "En attente" ? "selected" : ""}>En attente</option>
-          <option value="Validée" ${order.status === "Validée" ? "selected" : ""}>Validée</option>
-          <option value="Expédiée" ${order.status === "Expédiée" ? "selected" : ""}>Expédiée</option>
-          <option value="Livrée" ${order.status === "Livrée" ? "selected" : ""}>Livrée</option>
-          <option value="Annulée" ${order.status === "Annulée" ? "selected" : ""}>Annulée</option>
-        </select>
-      </td>
-      <td>${order.date}</td>
-      <td>${order.details.map(d => d.name + " x" + d.quantity).join(", ")}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function updateOrderStatus(orderId, status) {
-  const orders = getData(storageKeys.orders);
-  const order = orders.find(o => o.id === orderId);
-  if (!order) return;
-  order.status = status;
-  setData(storageKeys.orders, orders);
-  renderOrdersAdmin();
-  showMessage("Statut mis à jour.", "success");
-}
-
-<!-- =========================
-FICHIER : js/client-register.js
-========================= -->
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("clientRegisterBtn").addEventListener("click", registerClient);
-});
-
-function registerClient() {
-  const nom = document.getElementById("registerNom").value.trim();
-  const prenom = document.getElementById("registerPrenom").value.trim();
-  const email = document.getElementById("registerEmail").value.trim().toLowerCase();
-  const phone = document.getElementById("registerPhone").value.trim();
-  const password = document.getElementById("registerPassword").value.trim();
-
-  if (!nom || !prenom || !email || !phone || !password) {
-    showMessage("Tous les champs sont obligatoires.", "error");
-    return;
-  }
-
-  const clients = getData(storageKeys.clients);
-  if (clients.some(c => c.email === email)) {
-    showMessage("Cet email est déjà utilisé.", "error");
-    return;
-  }
-
-  clients.push({
-    id: clients.length ? Math.max(...clients.map(c => c.id)) + 1 : 1,
-    nom,
-    prenom,
-    email,
-    phone,
-    password
-  });
-
-  setData(storageKeys.clients, clients);
-  showMessage("Compte créé avec succès. Redirection vers la connexion...", "success");
-
-  setTimeout(() => {
-    window.location.href = "client-login.html";
-  }, 1200);
-}
-
-<!-- =========================
-FICHIER : js/client-login.js
-========================= -->
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("clientLoginBtn").addEventListener("click", loginClient);
-});
-
-function loginClient() {
-  const email = document.getElementById("clientLoginEmail").value.trim().toLowerCase();
-  const password = document.getElementById("clientLoginPassword").value.trim();
-
-  const client = getData(storageKeys.clients).find(c => c.email === email && c.password === password);
-
-  if (!client) {
-    showMessage("Connexion client invalide.", "error");
-    return;
-  }
-
-  setSession("client", client.id);
-  window.location.href = "client-dashboard.html";
-}
-
-<!-- =========================
-FICHIER : js/client-dashboard.js
-========================= -->
-document.addEventListener("DOMContentLoaded", () => {
-  requireClient();
-
-  document.getElementById("logoutBtn").addEventListener("click", logout);
-  document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
-
-  renderClientDashboard();
-});
-
-function renderClientDashboard() {
-  const client = getCurrentClient();
-  if (!client) {
-    logout();
-    return;
-  }
-
-  document.getElementById("clientWelcomeText").innerHTML =
-    "Bienvenue <strong>" + client.prenom + " " + client.nom + "</strong> (" + client.email + ")";
-
-  renderClientArticles();
-  renderCart();
-  renderClientOrders();
-}
-
-function renderClientArticles() {
-  const articles = getData(storageKeys.articles).filter(a => a.active && a.stock > 0);
-  const groups = getData(storageKeys.groups);
-  const container = document.getElementById("clientArticlesList");
-  container.innerHTML = "";
-
-  if (!articles.length) {
-    container.innerHTML = "<p>Aucun article disponible.</p>";
-    return;
-  }
-
-  articles.forEach(article => {
-    const group = groups.find(g => g.id === article.groupId);
-    const div = document.createElement("div");
-    div.className = "article-card";
-    div.innerHTML = `
-      <h3>${article.name}</h3>
-      <p>${article.description || ""}</p>
-      <p><span class="badge">${group ? group.name : "Sans groupe"}</span></p>
-      <p><strong>${formatPrice(article.price)}</strong></p>
-      <p>Stock : ${article.stock}</p>
-      <button class="btn btn-primary" onclick="addToCart(${article.id})">Ajouter au panier</button>
-    `;
-    container.appendChild(div);
-  });
-}
-
-function addToCart(articleId) {
-  const client = getCurrentClient();
-  const articles = getData(storageKeys.articles);
-  const article = articles.find(a => a.id === articleId);
-
-  if (!client || !article || !article.active || article.stock <= 0) {
-    showMessage("Article indisponible.", "error");
-    return;
-  }
-
-  const cart = getCart(client.id);
-  const existing = cart.find(item => item.articleId === articleId);
-
-  if (existing) {
-    if (existing.quantity >= article.stock) {
-      showMessage("Quantité maximale atteinte.", "error");
-      return;
-    }
-    existing.quantity += 1;
-  } else {
-    cart.push({ articleId, quantity: 1 });
-  }
-
-  setCart(client.id, cart);
-  renderCart();
-  showMessage("Article ajouté au panier.", "success");
-}
-
-function renderCart() {
-  const client = getCurrentClient();
-  const articles = getData(storageKeys.articles);
-  const cart = getCart(client.id);
-  const container = document.getElementById("cartList");
-  const totalBox = document.getElementById("cartTotal");
-
-  container.innerHTML = "";
-
-  if (!cart.length) {
-    container.innerHTML = "<p>Panier vide.</p>";
-    totalBox.textContent = "0.00";
-    return;
-  }
-
-  let total = 0;
-
-  cart.forEach(item => {
-    const article = articles.find(a => a.id === item.articleId);
-    if (!article) return;
-
-    total += article.price * item.quantity;
-
-    const div = document.createElement("div");
-    div.className = "cart-item";
-    div.innerHTML = `
-      <div class="row">
-        <div>
-          <strong>${article.name}</strong><br>
-          <span>${formatPrice(article.price)} x ${item.quantity}</span>
-        </div>
-        <div class="actions">
-          <button class="btn btn-secondary" onclick="changeQty(${article.id}, -1)">-</button>
-          <button class="btn btn-secondary" onclick="changeQty(${article.id}, 1)">+</button>
-          <button class="btn btn-danger" onclick="removeFromCart(${article.id})">Supprimer</button>
-        </div>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-
-  totalBox.textContent = total.toFixed(2);
-}
-
-function changeQty(articleId, delta) {
-  const client = getCurrentClient();
-  const articles = getData(storageKeys.articles);
-  const article = articles.find(a => a.id === articleId);
-  const cart = getCart(client.id);
-  const item = cart.find(i => i.articleId === articleId);
-
-  if (!item || !article) return;
-
-  item.quantity += delta;
-
-  if (item.quantity <= 0) {
-    setCart(client.id, cart.filter(i => i.articleId !== articleId));
-  } else if (item.quantity > article.stock) {
-    item.quantity = article.stock;
-    setCart(client.id, cart);
-  } else {
-    setCart(client.id, cart);
-  }
-
-  renderCart();
-}
-
-function removeFromCart(articleId) {
-  const client = getCurrentClient();
-  const cart = getCart(client.id).filter(i => i.articleId !== articleId);
-  setCart(client.id, cart);
-  renderCart();
-  showMessage("Article retiré du panier.", "success");
-}
-
-function placeOrder() {
-  const client = getCurrentClient();
-  const cart = getCart(client.id);
-  const articles = getData(storageKeys.articles);
-  const orders = getData(storageKeys.orders);
-
-  if (!cart.length) {
-    showMessage("Le panier est vide.", "error");
-    return;
-  }
-
-  let total = 0;
-  const details = [];
-
-  for (const item of cart) {
-    const article = articles.find(a => a.id === item.articleId);
-
-    if (!article || !article.active) {
-      showMessage("Un article n'est plus disponible.", "error");
-      return;
-    }
-
-    if (article.stock < item.quantity) {
-      showMessage("Stock insuffisant pour " + article.name, "error");
-      return;
-    }
-
-    article.stock -= item.quantity;
-    details.push({
-      articleId: article.id,
-      name: article.name,
-      quantity: item.quantity,
-      price: article.price
-    });
-
-    total += article.price * item.quantity;
-  }
-
-  orders.push({
-    id: orders.length ? Math.max(...orders.map(o => o.id)) + 1 : 1,
-    clientId: client.id,
-    total,
-    status: "En attente",
-    date: new Date().toLocaleString("fr-FR"),
-    details
-  });
-
-  setData(storageKeys.orders, orders);
-  setData(storageKeys.articles, articles);
-  setCart(client.id, []);
-
-  renderClientDashboard();
-  showMessage("Commande validée avec succès.", "success");
-}
-
-function renderClientOrders() {
-  const client = getCurrentClient();
-  const orders = getData(storageKeys.orders).filter(o => o.clientId === client.id);
-  const tbody = document.getElementById("clientOrdersTableBody");
-  tbody.innerHTML = "";
-
-  orders.forEach(order => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${order.id}</td>
-      <td>${formatPrice(order.total)}</td>
-      <td>${order.status}</td>
-      <td>${order.date}</td>
-      <td>${order.details.map(d => d.name + " x" + d.quantity).join(", ")}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
