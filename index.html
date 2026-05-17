@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ktb-import export | Confiseries & Boissons du Monde</title>
+    <title>Ktb Commerce</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap');
@@ -1118,7 +1118,7 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 3000;
+            z-index: 7000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1320,7 +1320,7 @@
         .group-modal-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.5);
-            z-index: 5000;
+            z-index: 6000;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.2s;
         }
@@ -1357,6 +1357,181 @@
         @media (max-width: 768px) {
             .aps-sidebar { display: none; }
             .aps-content { padding: 20px 16px; }
+        }
+
+        /* ===== ADMIN ARTICLE CARDS ===== */
+        .aac-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 14px;
+            padding: 4px 0 20px;
+        }
+        .aac-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .aac-card:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+        .aac-card.aac-card-hidden { opacity: 0.5; }
+
+        .aac-status-dot {
+            position: absolute; top: 10px; left: 10px;
+            width: 10px; height: 10px; border-radius: 50%;
+            z-index: 4; box-shadow: 0 0 0 2px white;
+        }
+        .aac-status-dot.s-ok  { background: var(--success); }
+        .aac-status-dot.s-low { background: #F59E0B; }
+        .aac-status-dot.s-out { background: #EF4444; }
+        .aac-status-dot.s-inf { background: var(--gray-400, #9ca3af); }
+
+        .aac-img-wrap {
+            height: 130px;
+            background: linear-gradient(135deg, #fafafa, #f0f0f0);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 52px; position: relative; overflow: hidden; flex-shrink: 0;
+        }
+        .aac-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .aac-hidden-overlay {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 11px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; gap: 6px;
+        }
+
+        .aac-body { padding: 12px 14px; flex: 1; }
+        .aac-brand { font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .aac-title { font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px; margin-bottom: 5px; }
+        .aac-price { font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 10px; }
+
+        .aac-stock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .aac-stock-label { font-size: 10px; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+        .aac-stock-val { font-size: 11px; font-weight: 800; }
+        .aac-stock-val.s-ok  { color: var(--success); }
+        .aac-stock-val.s-low { color: #F59E0B; }
+        .aac-stock-val.s-out { color: #EF4444; }
+        .aac-stock-val.s-inf { color: var(--gray-500); }
+
+        .aac-progress-bar { height: 5px; background: var(--gray-200); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+        .aac-progress-fill { height: 100%; border-radius: 99px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1), background 0.3s; }
+
+        .aac-qty-row { display: flex; align-items: center; gap: 6px; }
+        .aac-qty-btn {
+            width: 28px; height: 28px; border-radius: 8px;
+            border: 1px solid var(--gray-200); background: white;
+            cursor: pointer; font-size: 16px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); flex-shrink: 0; line-height: 1;
+            color: var(--gray-700);
+        }
+        .aac-qty-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .aac-qty-btn.minus:hover { border-color: #EF4444; color: #EF4444; background: #FEF2F2; }
+        .aac-qty-input {
+            flex: 1; text-align: center; padding: 5px 4px;
+            border: 1px solid var(--gray-200); border-radius: 8px;
+            font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+            outline: none; transition: var(--transition); min-width: 0;
+        }
+        .aac-qty-input:focus { border-color: var(--primary); }
+
+        .aac-footer {
+            display: flex; align-items: center; gap: 5px;
+            padding: 8px 10px; border-top: 1px solid var(--gray-200);
+            background: var(--gray-100); flex-shrink: 0;
+        }
+        .aac-footer .group-select-inline { flex: 1; font-size: 11px; padding: 5px 8px; max-width: none; }
+        .aac-action-btn {
+            width: 28px; height: 28px; border-radius: 7px;
+            border: 1px solid var(--gray-200); background: white;
+            cursor: pointer; font-size: 11px; color: var(--gray-700);
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); flex-shrink: 0;
+        }
+        .aac-action-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .aac-action-btn.del:hover { border-color: #EF4444; color: #EF4444; }
+
+        /* ===== STOCK DASHBOARD ===== */
+        .sdash-layout { display: flex; flex-direction: column; gap: 20px; }
+
+        /* KPIs */
+        .sdash-kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+        .sdash-kpi {
+            background: white; border-radius: 14px;
+            border: 1px solid var(--gray-200);
+            padding: 18px 20px;
+            display: flex; align-items: center; gap: 14px;
+            transition: var(--transition);
+        }
+        .sdash-kpi:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+        .sdash-kpi-alert { border-color: #FECACA !important; background: #FFF5F5; }
+        .sdash-kpi-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
+        .sdash-kpi-num { font-size: 28px; font-weight: 800; color: var(--dark); line-height: 1; }
+        .sdash-kpi-label { font-size: 11px; font-weight: 600; color: var(--gray-500); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Main body */
+        .sdash-body { display: grid; grid-template-columns: 280px 1fr; gap: 14px; }
+
+        /* Chart panel */
+        .sdash-panel {
+            background: white; border-radius: 14px;
+            border: 1px solid var(--gray-200); padding: 20px;
+        }
+        .sdash-panel-title {
+            font-size: 13px; font-weight: 700; color: var(--dark);
+            margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+        }
+        .sdash-panel-title i { color: var(--primary); }
+        .sdash-donut-area { display: flex; justify-content: center; margin-bottom: 16px; }
+        .sdash-donut-area svg circle { transform-origin: center; }
+
+        .sdash-legend { display: flex; flex-direction: column; gap: 8px; }
+        .sdash-legend-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 12px; color: var(--gray-700);
+        }
+        .sdash-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .sdash-legend-item span:last-of-type { flex: 1; }
+        .sdash-legend-item strong { font-size: 13px; font-weight: 800; color: var(--dark); }
+
+        /* Activity feed */
+        .sdash-activity-list { display: flex; flex-direction: column; gap: 2px; max-height: 340px; overflow-y: auto; }
+        .sdash-activity-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 0; border-bottom: 1px solid var(--gray-200);
+        }
+        .sdash-activity-item:last-child { border-bottom: none; }
+        .sdash-act-dot {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; flex-shrink: 0; margin-top: 1px;
+        }
+        .sdash-act-dot.add  { background: #D1FAE5; color: #065F46; }
+        .sdash-act-dot.edit { background: #EDE9FE; color: #5B21B6; }
+        .sdash-act-dot.del  { background: #FEE2E2; color: #991B1B; }
+        .sdash-act-dot.grp  { background: #FEF3C7; color: #92400E; }
+        .sdash-act-dot.cfg  { background: #DBEAFE; color: #1E40AF; }
+        .sdash-act-title { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+        .sdash-act-detail { font-size: 11px; color: var(--gray-500); }
+        .sdash-act-time { font-size: 10px; color: var(--gray-500); white-space: nowrap; margin-left: auto; padding-top: 2px; flex-shrink: 0; }
+
+        /* Critical table */
+        .sdash-critical { background: white; border-radius: 14px; border: 1px solid var(--gray-200); padding: 20px; }
+
+        @keyframes sdashPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .sdash-kpi-alert .sdash-kpi-num { animation: sdashPulse 2s ease-in-out infinite; }
+
+        @media (max-width: 900px) {
+            .sdash-kpis { grid-template-columns: repeat(2,1fr); }
+            .sdash-body  { grid-template-columns: 1fr; }
         }
 
         /* ===== TOGGLE SWITCH ===== */
@@ -1535,7 +1710,7 @@
         .product-modal-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.55);
-            z-index: 3000;
+            z-index: 6000;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s;
             padding: 24px;
@@ -1618,7 +1793,7 @@
         .modal-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.5);
-            z-index: 2500;
+            z-index: 6000;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
@@ -1757,7 +1932,7 @@
         .qv-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.55);
-            z-index: 3500;
+            z-index: 6000;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none;
             transition: opacity 0.3s;
@@ -2139,9 +2314,229 @@
             .ktb-letter { font-size: 64px; }
             .ktb-ie-word { letter-spacing: 5px; }
         }
+
+        /* ═══════════════════════════════════════════
+           SCROLL ANIMATIONS — KTB EDITION
+        ═══════════════════════════════════════════ */
+
+        /* ── PROGRESS BAR SCROLL ── */
+        #ktb-progress {
+            position: fixed; top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 9999;
+            width: 0%;
+            transition: width 0.08s linear;
+            box-shadow: 0 0 8px rgba(124,58,237,0.5);
+        }
+
+        /* ── LOADER ── */
+        #ktb-loader {
+            position: fixed; inset: 0;
+            background: #07041A;
+            z-index: 99999;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 28px;
+            transition: opacity 0.55s ease, visibility 0.55s ease;
+        }
+        #ktb-loader.hide { opacity: 0; visibility: hidden; }
+        .ktb-loader-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, #F59E0B 40%, #fde68a 60%, #F59E0B 80%, #fff 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: ktbLoaderShimmer 2s ease-in-out infinite;
+            letter-spacing: 0.08em;
+        }
+        @keyframes ktbLoaderShimmer {
+            0%,100% { background-position: 0% 50%; }
+            50%      { background-position: 100% 50%; }
+        }
+        .ktb-loader-bar-wrap {
+            width: 180px; height: 2px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 99px; overflow: hidden;
+        }
+        .ktb-loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0;
+            border-radius: 99px;
+            animation: ktbBarFill 1.4s 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes ktbBarFill { to { width: 100%; } }
+        .ktb-loader-sub {
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            font-weight: 500;
+        }
+
+        /* ── CURSOR CUSTOM ── */
+        #ktb-cursor {
+            width: 10px; height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 9997;
+            transform: translate(-50%,-50%);
+            transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+            mix-blend-mode: screen;
+        }
+        #ktb-cursor-ring { display: none; }
+        .ktb-cursor-hover #ktb-cursor {
+            width: 16px; height: 16px; background: var(--primary);
+        }
+        .ktb-cursor-hover #ktb-cursor-ring {
+            width: 50px; height: 50px;
+            border-color: var(--accent);
+        }
+        @media (hover: none) {
+            #ktb-cursor, #ktb-cursor-ring { display: none; }
+        }
+
+        /* ── SCROLL REVEAL ── */
+        .ktb-reveal {
+            opacity: 0;
+            transform: translateY(44px);
+            transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1),
+                        transform 0.65s cubic-bezier(0.4,0,0.2,1);
+        }
+        .ktb-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .ktb-reveal-left {
+            opacity: 0;
+            transform: translateX(-36px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .ktb-reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+        .ktb-reveal-right {
+            opacity: 0;
+            transform: translateX(36px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .ktb-reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+        /* stagger delays pour les cartes */
+        .card:nth-child(1) { transition-delay: 0s !important; }
+        .card:nth-child(2) { transition-delay: 0.08s !important; }
+        .card:nth-child(3) { transition-delay: 0.16s !important; }
+        .card:nth-child(4) { transition-delay: 0.24s !important; }
+        .card:nth-child(5) { transition-delay: 0.32s !important; }
+        .card:nth-child(6) { transition-delay: 0.4s !important; }
+
+        /* ── FLOAT ANIMATION IMAGES ── */
+        @keyframes ktbFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50%       { transform: translateY(-9px) scale(1.01); }
+        }
+        .card-img img, .card-img > span, .card-img > div {
+            animation: ktbFloat 5s ease-in-out infinite;
+        }
+        .card:nth-child(2) .card-img img  { animation-delay: -1.6s; }
+        .card:nth-child(3) .card-img img  { animation-delay: -3.2s; }
+        .card:nth-child(4) .card-img img  { animation-delay: -0.8s; }
+        .card:nth-child(5) .card-img img  { animation-delay: -2.4s; }
+        .card:nth-child(6) .card-img img  { animation-delay: -4s; }
+
+        /* Pas de float au hover */
+        .card:hover .card-img img {
+            animation: none;
+            transform: scale(1.06);
+        }
+
+        /* ── MARQUEE KTB ── */
+        .ktb-marquee-wrap {
+            overflow: hidden;
+            padding: 13px 0;
+            position: relative;
+        }
+        .ktb-marquee-wrap.dark  { background: #07041A; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .ktb-marquee-wrap.light { background: var(--primary-light); border-top: 1px solid rgba(124,58,237,0.12); border-bottom: 1px solid rgba(124,58,237,0.12); }
+        .ktb-marquee-wrap.gold  { background: linear-gradient(90deg, #1a0f00, #2d1a00, #1a0f00); border-top: 1px solid rgba(245,158,11,0.2); border-bottom: 1px solid rgba(245,158,11,0.2); }
+
+        .ktb-marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: ktbMarqueeScroll 22s linear infinite;
+        }
+        .ktb-marquee-track.reverse {
+            animation-direction: reverse;
+            animation-duration: 26s;
+        }
+        .ktb-marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 28px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .ktb-marquee-item::after {
+            content: '✦';
+            font-size: 9px;
+            opacity: 0.6;
+        }
+        .ktb-marquee-wrap.dark  .ktb-marquee-item { color: rgba(255,255,255,0.7); }
+        .ktb-marquee-wrap.dark  .ktb-marquee-item::after { color: var(--accent); }
+        .ktb-marquee-wrap.light .ktb-marquee-item { color: var(--primary); }
+        .ktb-marquee-wrap.light .ktb-marquee-item::after { color: var(--primary); }
+        .ktb-marquee-wrap.gold  .ktb-marquee-item { color: rgba(245,158,11,0.9); }
+        .ktb-marquee-wrap.gold  .ktb-marquee-item::after { color: rgba(255,255,255,0.3); }
+
+        @keyframes ktbMarqueeScroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* ── SECTION HEAD REVEAL ── */
+        .section-head { overflow: hidden; }
+
+        /* ── FEATURES STAGGER ── */
+        .feature-card:nth-child(1).ktb-reveal { transition-delay: 0s; }
+        .feature-card:nth-child(2).ktb-reveal { transition-delay: 0.1s; }
+        .feature-card:nth-child(3).ktb-reveal { transition-delay: 0.2s; }
+        .feature-card:nth-child(4).ktb-reveal { transition-delay: 0.3s; }
+
+        /* ── STAT ITEMS STAGGER ── */
+        .stat-item:nth-child(1).ktb-reveal { transition-delay: 0s; }
+        .stat-item:nth-child(2).ktb-reveal { transition-delay: 0.1s; }
+        .stat-item:nth-child(3).ktb-reveal { transition-delay: 0.2s; }
+        .stat-item:nth-child(4).ktb-reveal { transition-delay: 0.3s; }
+
+        /* ── CARD IMAGE EMOJI FLOAT (quand pas d'img) ── */
+        .card-img { font-size: 72px; }
+
+        /* ── PROMO BANNER REVEAL ── */
+        .promo-banner-inner { transition: box-shadow 0.3s; }
+        .promo-banner-inner:hover { box-shadow: 0 24px 64px rgba(0,0,0,0.35); }
+
     </style>
 </head>
 <body>
+<!-- ═══ KTB SCROLL ANIMATIONS UI ═══ -->
+<div id="ktb-progress"></div>
+<div id="ktb-cursor"></div>
+<div id="ktb-cursor-ring"></div>
+<div id="ktb-loader">
+    <div class="ktb-loader-logo">KTB</div>
+    <div class="ktb-loader-bar-wrap">
+        <div class="ktb-loader-bar"></div>
+    </div>
+    
+</div>
+
 
     <!-- ANNONCE -->
     <div class="announcement">
@@ -2157,8 +2552,8 @@
             <a href="#" class="logo">
                 <div class="logo-icon">K</div>
                 <div class="logo-text">
-                    <span class="logo-name">Ktb-import export</span>
-                    <span class="logo-tagline">Confiseries & boissons du monde</span>
+                    <span class="logo-name">Ktb Commerce</span>
+                    
                 </div>
             </a>
 
@@ -2288,9 +2683,17 @@
                     </div>
                 </div>
             </div>
-            <div class="product-modal-footer">
-                <button class="btn-cancel" onclick="closeProductModal()">Annuler</button>
-                <button class="btn-save" onclick="saveProduct()"><i class="fas fa-check"></i> Enregistrer</button>
+            <div class="product-modal-footer" style="justify-content:space-between;">
+                <button id="btn-delete-in-modal" style="display:none;align-items:center;gap:6px;padding:12px 20px;border-radius:50px;border:none;background:#FEE2E2;color:#991B1B;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:var(--transition);"
+                    onmouseover="this.style.background='#EF4444';this.style.color='white';"
+                    onmouseout="this.style.background='#FEE2E2';this.style.color='#991B1B';"
+                    onclick="deleteCardFromModal()">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+                <div style="display:flex;gap:12px;margin-left:auto;">
+                    <button class="btn-cancel" onclick="closeProductModal()">Annuler</button>
+                    <button class="btn-save" onclick="saveProduct()"><i class="fas fa-check"></i> Enregistrer</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2303,14 +2706,6 @@
         <div class="hero-orb hero-orb-3"></div>
         <!-- Grille -->
         <div class="hero-grid-overlay"></div>
-        <!-- Produits flottants -->
-        <div class="hero-float-item" style="top:14%;left:7%;animation-delay:0s;">🍫</div>
-        <div class="hero-float-item" style="top:18%;right:9%;animation-delay:-2.5s;">🥤</div>
-        <div class="hero-float-item" style="bottom:28%;left:10%;animation-delay:-4s;">🍬</div>
-        <div class="hero-float-item" style="bottom:22%;right:7%;animation-delay:-1.2s;">🍪</div>
-        <div class="hero-float-item" style="top:55%;left:4%;animation-delay:-3s;font-size:32px;">✈️</div>
-        <div class="hero-float-item" style="top:12%;right:28%;animation-delay:-5s;font-size:34px;">🌍</div>
-        <div class="hero-float-item" style="bottom:40%;right:4%;animation-delay:-1.8s;">🍭</div>
 
         <div class="hero-inner" style="position:relative;z-index:2;text-align:center;width:100%;max-width:860px;margin:0 auto;">
 
@@ -2321,15 +2716,10 @@
                 <span class="ktb-letter">B</span>
             </div>
 
-            <!-- IMPORT · EXPORT -->
+            <!-- COMMERCE -->
             <div class="ktb-ie">
-                <span class="ktb-ie-word">Import</span>
-                <div class="ktb-ie-sep"></div>
-                <span class="ktb-ie-word">Export</span>
+                <span class="ktb-ie-word">Commerce</span>
             </div>
-
-            <!-- Tagline -->
-            <p class="ktb-tagline">Confiseries, snacks et boissons du monde entier — importés directement des États-Unis, du Japon et du Royaume-Uni.</p>
 
             <!-- Pays -->
             <div class="hero-countries">
@@ -2505,6 +2895,29 @@
         </div>
     </section>
 
+
+    <!-- KTB MARQUEE 1 -->
+    <div class="ktb-marquee-wrap dark">
+        <div class="ktb-marquee-track">
+            <span class="ktb-marquee-item">🍫 Chocolats Américains</span>
+            <span class="ktb-marquee-item">🥤 Boissons du Japon</span>
+            <span class="ktb-marquee-item">🍬 Confiseries du Monde</span>
+            <span class="ktb-marquee-item">🇺🇸 USA Import</span>
+            <span class="ktb-marquee-item">🇯🇵 Japan Edition</span>
+            <span class="ktb-marquee-item">🇬🇧 UK Flavours</span>
+            <span class="ktb-marquee-item">📦 +2 000 Références</span>
+            <span class="ktb-marquee-item">🚀 Livraison 24–48h</span>
+            <span class="ktb-marquee-item">🍫 Chocolats Américains</span>
+            <span class="ktb-marquee-item">🥤 Boissons du Japon</span>
+            <span class="ktb-marquee-item">🍬 Confiseries du Monde</span>
+            <span class="ktb-marquee-item">🇺🇸 USA Import</span>
+            <span class="ktb-marquee-item">🇯🇵 Japan Edition</span>
+            <span class="ktb-marquee-item">🇬🇧 UK Flavours</span>
+            <span class="ktb-marquee-item">📦 +2 000 Références</span>
+            <span class="ktb-marquee-item">🚀 Livraison 24–48h</span>
+        </div>
+    </div>
+
     <!-- BANNER PROMO -->
     <div class="promo-banner">
         <div class="promo-banner-inner">
@@ -2610,6 +3023,29 @@
         </div>
     </section>
 
+
+    <!-- KTB MARQUEE 2 -->
+    <div class="ktb-marquee-wrap gold">
+        <div class="ktb-marquee-track reverse">
+            <span class="ktb-marquee-item">⭐ Bestsellers KTB</span>
+            <span class="ktb-marquee-item">🔥 Tendances Import</span>
+            <span class="ktb-marquee-item">🏆 Top Ventes</span>
+            <span class="ktb-marquee-item">💛 Qualité Premium</span>
+            <span class="ktb-marquee-item">🌍 Saveurs du Monde</span>
+            <span class="ktb-marquee-item">🍭 Éditions Limitées</span>
+            <span class="ktb-marquee-item">🎁 Cadeaux Gourmands</span>
+            <span class="ktb-marquee-item">🛒 Commande en Ligne</span>
+            <span class="ktb-marquee-item">⭐ Bestsellers KTB</span>
+            <span class="ktb-marquee-item">🔥 Tendances Import</span>
+            <span class="ktb-marquee-item">🏆 Top Ventes</span>
+            <span class="ktb-marquee-item">💛 Qualité Premium</span>
+            <span class="ktb-marquee-item">🌍 Saveurs du Monde</span>
+            <span class="ktb-marquee-item">🍭 Éditions Limitées</span>
+            <span class="ktb-marquee-item">🎁 Cadeaux Gourmands</span>
+            <span class="ktb-marquee-item">🛒 Commande en Ligne</span>
+        </div>
+    </div>
+
     <!-- MEILLEURES VENTES -->
     <section class="container" style="background: var(--white); max-width: 100%; padding-left: 0; padding-right: 0;">
         <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
@@ -2707,6 +3143,29 @@
         </div>
     </section>
 
+
+    <!-- KTB MARQUEE 3 -->
+    <div class="ktb-marquee-wrap light">
+        <div class="ktb-marquee-track">
+            <span class="ktb-marquee-item">🍿 Snacks Exotiques</span>
+            <span class="ktb-marquee-item">🍪 Biscuits Premium</span>
+            <span class="ktb-marquee-item">🍜 Saveurs Asiatiques</span>
+            <span class="ktb-marquee-item">🫐 Fruits Exotiques</span>
+            <span class="ktb-marquee-item">🌶️ Piments du Mexique</span>
+            <span class="ktb-marquee-item">🍧 Glaces Japonaises</span>
+            <span class="ktb-marquee-item">🎋 Matcha & Yuzu</span>
+            <span class="ktb-marquee-item">🍯 Caramel d'Écosse</span>
+            <span class="ktb-marquee-item">🍿 Snacks Exotiques</span>
+            <span class="ktb-marquee-item">🍪 Biscuits Premium</span>
+            <span class="ktb-marquee-item">🍜 Saveurs Asiatiques</span>
+            <span class="ktb-marquee-item">🫐 Fruits Exotiques</span>
+            <span class="ktb-marquee-item">🌶️ Piments du Mexique</span>
+            <span class="ktb-marquee-item">🍧 Glaces Japonaises</span>
+            <span class="ktb-marquee-item">🎋 Matcha & Yuzu</span>
+            <span class="ktb-marquee-item">🍯 Caramel d'Écosse</span>
+        </div>
+    </div>
+
     <!-- FEATURES -->
     <section class="features-section">
         <div class="features-grid">
@@ -2782,7 +3241,7 @@
     <nav class="mobile-nav" id="mobile-nav">
         <div class="mobile-nav-head">
             <div class="logo-text">
-                <span class="logo-name">Ktb-import export</span>
+                <span class="logo-name">Ktb Commerce</span>
             </div>
             <button class="mobile-nav-close" id="mobile-nav-close"><i class="fas fa-times"></i></button>
         </div>
@@ -2801,7 +3260,7 @@
         <div class="modal-box" style="position:relative;">
             <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
             <h2 id="modal-title">Connexion</h2>
-            <p id="modal-subtitle">Accédez à votre compte Ktb-import export</p>
+            <p id="modal-subtitle">Accédez à votre compte Ktb Commerce</p>
             <div id="modal-login-form">
                 <div class="form-group">
                     <label>Adresse e-mail</label>
@@ -2976,6 +3435,18 @@
                                 <i class="fas fa-save"></i> Enregistrer
                             </button>
                         </div>
+
+                        <div class="settings-card" style="margin-top:16px;">
+                            <h3>Curseur personnalisé</h3>
+                            <p>Activer ou désactiver le curseur animé sur la boutique.</p>
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="setting-cursor" onchange="toggleCustomCursor(this.checked)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span id="setting-cursor-label" style="font-size:13px;font-weight:600;color:var(--gray-500);">Désactivé</span>
+                            </div>
+                        </div>
                     </div>
 
                 </div><!-- /aps-content -->
@@ -3110,8 +3581,8 @@
                     <a href="#" class="logo" style="margin-bottom: 8px;">
                         <div class="logo-icon">K</div>
                         <div class="logo-text">
-                            <span class="logo-name" style="color: white;">Ktb-import export</span>
-                            <span class="logo-tagline">Confiseries & boissons du monde</span>
+                            <span class="logo-name" style="color: white;">Ktb Commerce</span>
+                            
                         </div>
                     </a>
                     <p class="footer-brand-desc">Votre destination de référence pour les confiseries, les snacks et les boissons importés du monde entier. Qualité, rapidité et saveurs garanties.</p>
@@ -3147,7 +3618,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>© 2025 Ktb-import export. Tous droits réservés.</span>
+                <span>© 2025 Ktb Commerce. Tous droits réservés.</span>
                 <div class="footer-payments">
                     <span><i class="fab fa-cc-visa"></i> Visa</span>
                     <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -3416,13 +3887,13 @@ document.getElementById('switch-to-register').addEventListener('click', () => {
     loginForm.style.display = 'none';
     registerForm.style.display = 'block';
     modalTitle.textContent = 'Créer un compte';
-    modalSubtitle.textContent = 'Rejoignez la communauté Ktb-import export';
+    modalSubtitle.textContent = 'Rejoignez la communauté Ktb Commerce';
 });
 document.getElementById('switch-to-login').addEventListener('click', () => {
     registerForm.style.display = 'none';
     loginForm.style.display = 'block';
     modalTitle.textContent = 'Connexion';
-    modalSubtitle.textContent = 'Accédez à votre compte Ktb-import export';
+    modalSubtitle.textContent = 'Accédez à votre compte Ktb Commerce';
 });
 
 document.getElementById('btn-login-submit').addEventListener('click', () => {
@@ -3885,6 +4356,14 @@ function openEditModal(card) {
     populateGroupSelects();
     document.getElementById('edit-group').value = editingCard.dataset.group || '';
 
+    const stockVal = getStock(editingCard);
+    document.getElementById('edit-stock').value = stockVal !== null ? stockVal : '';
+    const visibleVal = editingCard.dataset.visible !== 'false';
+    document.getElementById('edit-visible').checked = visibleVal;
+    document.getElementById('edit-visible-label').textContent = visibleVal ? 'Visible' : 'Masqué';
+    document.getElementById('edit-visible-label').style.color = visibleVal ? 'var(--success)' : 'var(--gray-500)';
+
+    document.getElementById('btn-delete-in-modal').style.display = 'flex';
     document.getElementById('product-modal-title').textContent = 'Modifier l\'article';
     document.getElementById('product-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -3908,6 +4387,7 @@ function openAddModal() {
     populateGroupSelects();
     document.getElementById('edit-group').value = '';
 
+    document.getElementById('btn-delete-in-modal').style.display = 'none';
     document.getElementById('product-modal-title').textContent = 'Ajouter un article';
     document.getElementById('product-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -3917,6 +4397,24 @@ function closeProductModal() {
     document.getElementById('product-modal').classList.remove('open');
     document.body.style.overflow = '';
     editingCard = null;
+}
+
+function deleteCardFromModal() {
+    if (!editingCard) return;
+    const brand = editingCard.querySelector('.card-brand').textContent.trim();
+    if (!confirm(`Supprimer "${brand}" du catalogue ?`)) return;
+    const cardRef = editingCard;
+    closeProductModal();
+    cardRef.style.transition = 'opacity 0.3s, transform 0.3s';
+    cardRef.style.opacity = '0';
+    cardRef.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+        cardRef.remove();
+        if (currentTab === 'articles') renderArticlesPanel();
+        if (currentTab === 'stock') renderStockPanel();
+    }, 300);
+    showToast(`"${brand}" supprimé`, 'error');
+    logActivity('del', `Article supprimé : ${brand}`);
 }
 
 function saveProduct() {
@@ -3949,6 +4447,11 @@ function saveProduct() {
         }
         editingCard.querySelector('.card-price').innerHTML = priceHtml;
         editingCard.dataset.group = document.getElementById('edit-group').value;
+
+        const stockInput = document.getElementById('edit-stock').value;
+        setStock(editingCard, stockInput);
+        const visibleToggle = document.getElementById('edit-visible').checked;
+        setVisibility(editingCard, visibleToggle);
 
         let badge = editingCard.querySelector('.card-badge');
         if (badgeType !== 'none' && badgeText) {
@@ -4087,9 +4590,37 @@ function saveCredentials() {
 }
 document.getElementById('pwd-modal').addEventListener('click', e => { if (e.target === document.getElementById('pwd-modal')) closePwdModal(); });
 
+// ===== CURSOR TOGGLE =====
+function toggleCustomCursor(enabled) {
+    const cur = document.getElementById('ktb-cursor');
+    const lbl = document.getElementById('setting-cursor-label');
+    if (cur) cur.style.display = enabled ? 'block' : 'none';
+    if (lbl) { lbl.textContent = enabled ? 'Activé' : 'Désactivé'; lbl.style.color = enabled ? 'var(--success)' : 'var(--gray-500)'; }
+    localStorage.setItem('ktb_cursor', enabled ? '1' : '0');
+}
+
+// Init cursor from saved pref
+(function() {
+    const saved = localStorage.getItem('ktb_cursor');
+    const enabled = saved === '1';
+    const cur = document.getElementById('ktb-cursor');
+    if (cur) cur.style.display = enabled ? 'block' : 'none';
+    const toggle = document.getElementById('setting-cursor');
+    if (toggle) toggle.checked = enabled;
+    const lbl = document.getElementById('setting-cursor-label');
+    if (lbl) { lbl.textContent = enabled ? 'Activé' : 'Désactivé'; lbl.style.color = enabled ? 'var(--success)' : 'var(--gray-500)'; }
+})();
+
 // Live emoji preview
 document.getElementById('edit-emoji').addEventListener('input', e => {
     document.getElementById('emoji-preview').textContent = e.target.value || '🛍️';
+});
+
+// Live visible toggle label
+document.getElementById('edit-visible').addEventListener('change', e => {
+    const lbl = document.getElementById('edit-visible-label');
+    lbl.textContent = e.target.checked ? 'Visible' : 'Masqué';
+    lbl.style.color = e.target.checked ? 'var(--success)' : 'var(--gray-500)';
 });
 
 // Live image URL preview
@@ -4560,70 +5091,145 @@ saveProduct = function() {
     }, 50);
 };
 
-// ===== ARTICLES TABLE (enhanced) =====
+// ===== ARTICLES CARD GRID (enhanced) =====
 const _origRenderArticlesPanel = renderArticlesPanel;
 renderArticlesPanel = function() {
-    const tbody = document.getElementById('articles-tbody');
-    const cards = [...document.querySelectorAll('.card')];
-    const grids = [...document.querySelectorAll('.grid')];
-    const sectionNames = ['Nouveautés', 'Promotions', 'Meilleures ventes'];
-
-    // Populate filter dropdowns
+    // Populate filter/bulk dropdowns
     const filterSel = document.getElementById('articles-filter-group');
-    const bulkSel = document.getElementById('bulk-group-select');
-    if (filterSel) {
-        filterSel.innerHTML = '<option value="">Tous les groupes</option>' + groups.map(g => `<option value="${g.id}">${g.emoji} ${g.name}</option>`).join('');
-    }
-    if (bulkSel) {
-        bulkSel.innerHTML = '<option value="">Assigner groupe…</option>' + groups.map(g => `<option value="${g.id}">${g.emoji} ${g.name}</option>`).join('');
+    const bulkSel   = document.getElementById('bulk-group-select');
+    if (filterSel) filterSel.innerHTML = '<option value="">Tous les groupes</option>' + groups.map(g => `<option value="${g.id}">${g.emoji} ${g.name}</option>`).join('');
+    if (bulkSel)   bulkSel.innerHTML   = '<option value="">Assigner groupe…</option>'  + groups.map(g => `<option value="${g.id}">${g.emoji} ${g.name}</option>`).join('');
+
+    // Hide table, show/create card grid
+    const tableWrap = document.querySelector('#aps-tab-articles .aps-table-wrap');
+    if (tableWrap) tableWrap.style.display = 'none';
+    let cardGrid = document.getElementById('articles-cards-container');
+    if (!cardGrid) {
+        cardGrid = document.createElement('div');
+        cardGrid.id = 'articles-cards-container';
+        cardGrid.className = 'aac-grid';
+        if (tableWrap) tableWrap.parentNode.insertBefore(cardGrid, tableWrap);
     }
 
-    if (!cards.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--gray-500);padding:32px;">Aucun article</td></tr>'; return; }
+    const cards = [...document.querySelectorAll('.card')];
+    if (!cards.length) {
+        cardGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--gray-500);padding:48px;">Aucun article</div>';
+        return;
+    }
 
-    tbody.innerHTML = cards.map((card, idx) => {
-        const imgEl = card.querySelector('.card-img img');
-        const emoji = card.querySelector('.card-img').textContent.trim();
-        const brand = card.querySelector('.card-brand').textContent.trim();
-        const title = card.querySelector('.card-title').textContent.trim();
+    const stocks = cards.map(c => getStock(c)).filter(s => s !== null);
+    const maxStock = stocks.length ? Math.max(...stocks, 1) : 50;
+
+    cardGrid.innerHTML = cards.map((card, idx) => {
+        const imgEl   = card.querySelector('.card-img img');
+        const emoji   = card.querySelector('.card-img').textContent.trim();
+        const brand   = card.querySelector('.card-brand').textContent.trim();
+        const title   = card.querySelector('.card-title').textContent.trim();
         const priceEl = card.querySelector('.card-price');
-        const nodes = [...priceEl.childNodes].filter(n => n.nodeType === 3);
-        const price = nodes.length ? nodes[nodes.length-1].textContent.trim() : priceEl.textContent.trim();
-        const gridIdx = grids.findIndex(g => g.contains(card));
-        const section = sectionNames[gridIdx] || '—';
-        const gid = card.dataset.group || '';
-        const g = groups.find(x => x.id === gid);
-        const stock = getStock(card);
+        const nodes   = [...priceEl.childNodes].filter(n => n.nodeType === 3);
+        const price   = nodes.length ? nodes[nodes.length-1].textContent.trim() : priceEl.textContent.trim();
+        const stock   = getStock(card);
         const visible = card.dataset.visible !== 'false';
-        const imgHtml = imgEl ? `<img src="${imgEl.src}" style="width:36px;height:36px;object-fit:cover;border-radius:8px;">` : `<span style="font-size:22px;">${emoji}</span>`;
+        const gid     = card.dataset.group || '';
 
-        let stockBadge;
-        if (stock === null) stockBadge = '<span class="stock-badge stock-inf">∞</span>';
-        else if (stock === 0) stockBadge = '<span class="stock-badge stock-out">Rupture</span>';
-        else if (stock <= 5) stockBadge = `<span class="stock-badge stock-low">${stock}</span>`;
-        else stockBadge = `<span class="stock-badge stock-ok">${stock}</span>`;
+        const statusClass = stock === null ? 's-inf' : stock === 0 ? 's-out' : stock <= 5 ? 's-low' : 's-ok';
+        const pct      = stock === null ? 100 : Math.round(Math.min(stock, maxStock) / maxStock * 100);
+        const barColor = stock === null ? '#9ca3af' : stock === 0 ? '#EF4444' : stock <= 5 ? '#F59E0B' : 'var(--success)';
+        const stockLabel = stock === null ? '∞' : stock === 0 ? 'Rupture' : stock <= 5 ? `${stock} — Faible` : String(stock);
 
-        const groupOpts = '<option value="">— Aucun —</option>' + groups.map(gg => `<option value="${gg.id}" ${gg.id === gid ? 'selected' : ''}>${gg.emoji} ${gg.name}</option>`).join('');
+        const imgHtml       = imgEl ? `<img src="${imgEl.src}" alt="${title}">` : emoji;
+        const hiddenOverlay = !visible ? '<div class="aac-hidden-overlay"><i class="fas fa-eye-slash"></i> Masqué</div>' : '';
+        const groupOpts     = '<option value="">— Aucun groupe —</option>' + groups.map(g => `<option value="${g.id}" ${g.id === gid ? 'selected' : ''}>${g.emoji} ${g.name}</option>`).join('');
 
-        return `<tr data-card-idx="${idx}" class="article-row">
-            <td><input type="checkbox" class="bulk-check" data-idx="${idx}" style="accent-color:var(--primary);" onchange="updateBulkBar()"></td>
-            <td><div class="td-img">${imgHtml}</div></td>
-            <td><div class="aps-brand">${brand}</div><div class="aps-title" title="${title}">${title}</div></td>
-            <td style="font-weight:700;font-size:13px;">${price}</td>
-            <td><input type="number" class="inline-stock-input" value="${stock ?? ''}" placeholder="∞" min="0" onchange="inlineSetStock(this, ${idx})" title="Modifier le stock"></td>
-            <td><select class="group-select-inline" onchange="assignGroupToCard(this, ${idx})">${groupOpts}</select></td>
-            <td>
-                <label class="toggle-switch" style="transform:scale(0.85);">
-                    <input type="checkbox" ${visible ? 'checked' : ''} onchange="inlineSetVisibility(this, ${idx})">
+        return `
+        <div class="aac-card${!visible ? ' aac-card-hidden' : ''}" data-card-idx="${idx}" data-search="${brand.toLowerCase()} ${title.toLowerCase()}">
+            <div class="aac-status-dot ${statusClass}"></div>
+            <div class="aac-img-wrap">${imgHtml}${hiddenOverlay}</div>
+            <div class="aac-body">
+                <div class="aac-brand">${brand}</div>
+                <div class="aac-title" title="${title}">${title}</div>
+                <div class="aac-price">${price}</div>
+                <div class="aac-stock-head">
+                    <span class="aac-stock-label">Stock</span>
+                    <span class="aac-stock-val ${statusClass}">${stockLabel}</span>
+                </div>
+                <div class="aac-progress-bar">
+                    <div class="aac-progress-fill" style="width:${pct}%;background:${barColor};"></div>
+                </div>
+                <div class="aac-qty-row">
+                    <button class="aac-qty-btn minus" onclick="quickStockChange(${idx},-1)" title="Retirer 1">−</button>
+                    <input type="number" class="aac-qty-input" value="${stock !== null ? stock : ''}" placeholder="∞" min="0" onchange="aacSetStock(this,${idx})">
+                    <button class="aac-qty-btn" onclick="quickStockChange(${idx},+1)" title="Ajouter 1">+</button>
+                </div>
+            </div>
+            <div class="aac-footer">
+                <select class="group-select-inline" onchange="assignGroupToCard(this,${idx})">${groupOpts}</select>
+                <label class="toggle-switch" style="transform:scale(0.8);flex-shrink:0;" title="${visible ? 'Masquer' : 'Afficher'}">
+                    <input type="checkbox" ${visible ? 'checked' : ''} onchange="inlineSetVisibility(this,${idx});refreshAacCardByIdx(${idx})">
                     <span class="toggle-slider"></span>
                 </label>
-            </td>
-            <td style="display:flex;gap:6px;">
-                <button onclick="openEditModal(document.querySelectorAll('.card')[${idx}])" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--gray-200);background:white;cursor:pointer;font-size:12px;color:var(--primary);" title="Modifier"><i class="fas fa-pen"></i></button>
-                <button onclick="deleteCard(document.querySelectorAll('.card')[${idx}])" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--gray-200);background:white;cursor:pointer;font-size:12px;color:var(--accent);" title="Supprimer"><i class="fas fa-trash"></i></button>
-            </td>
-        </tr>`;
+                <button class="aac-action-btn" onclick="openEditModal(document.querySelectorAll('.card')[${idx}])" title="Modifier"><i class="fas fa-pen"></i></button>
+                <button class="aac-action-btn del" onclick="deleteCard(document.querySelectorAll('.card')[${idx}]);renderArticlesPanel();" title="Supprimer"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>`;
     }).join('');
 };
+
+// ===== HELPERS CARTES ADMIN =====
+function quickStockChange(cardIdx, delta) {
+    const card = [...document.querySelectorAll('.card')][cardIdx];
+    if (!card) return;
+    const current = getStock(card);
+    const newVal  = Math.max(0, (current ?? 0) + delta);
+    setStock(card, newVal);
+    refreshAacCardByIdx(cardIdx);
+    logActivity('edit', `Stock modifié : ${card.querySelector('.card-brand').textContent.trim()}`, `→ ${newVal}`);
+}
+
+function aacSetStock(input, cardIdx) {
+    const card = [...document.querySelectorAll('.card')][cardIdx];
+    if (!card) return;
+    setStock(card, input.value);
+    refreshAacCardByIdx(cardIdx);
+    logActivity('edit', `Stock modifié : ${card.querySelector('.card-brand').textContent.trim()}`, `→ ${input.value || '∞'}`);
+}
+
+function refreshAacCardByIdx(cardIdx) {
+    const card    = [...document.querySelectorAll('.card')][cardIdx];
+    const aacCard = document.querySelector(`.aac-card[data-card-idx="${cardIdx}"]`);
+    if (!card || !aacCard) return;
+
+    const stocks   = [...document.querySelectorAll('.card')].map(c => getStock(c)).filter(s => s !== null);
+    const maxStock = stocks.length ? Math.max(...stocks, 1) : 50;
+    const stock    = getStock(card);
+    const visible  = card.dataset.visible !== 'false';
+
+    const statusClass = stock === null ? 's-inf' : stock === 0 ? 's-out' : stock <= 5 ? 's-low' : 's-ok';
+    const pct      = stock === null ? 100 : Math.round(Math.min(stock, maxStock) / maxStock * 100);
+    const barColor = stock === null ? '#9ca3af' : stock === 0 ? '#EF4444' : stock <= 5 ? '#F59E0B' : 'var(--success)';
+    const stockLabel = stock === null ? '∞' : stock === 0 ? 'Rupture' : stock <= 5 ? `${stock} — Faible` : String(stock);
+
+    aacCard.querySelector('.aac-status-dot').className = `aac-status-dot ${statusClass}`;
+    const fill = aacCard.querySelector('.aac-progress-fill');
+    fill.style.width      = pct + '%';
+    fill.style.background = barColor;
+    const valEl = aacCard.querySelector('.aac-stock-val');
+    valEl.textContent = stockLabel;
+    valEl.className   = `aac-stock-val ${statusClass}`;
+    aacCard.querySelector('.aac-qty-input').value = stock !== null ? stock : '';
+
+    aacCard.classList.toggle('aac-card-hidden', !visible);
+    const imgWrap  = aacCard.querySelector('.aac-img-wrap');
+    const existing = aacCard.querySelector('.aac-hidden-overlay');
+    if (!visible && !existing) {
+        const ov = document.createElement('div');
+        ov.className = 'aac-hidden-overlay';
+        ov.innerHTML = '<i class="fas fa-eye-slash"></i> Masqué';
+        imgWrap.appendChild(ov);
+    } else if (visible && existing) {
+        existing.remove();
+    }
+}
 
 function inlineSetStock(input, idx) {
     const card = [...document.querySelectorAll('.card')][idx];
@@ -4640,13 +5246,14 @@ function inlineSetVisibility(toggle, idx) {
 
 function filterArticlesTable(q) {
     const gFilter = document.getElementById('articles-filter-group')?.value || '';
-    document.querySelectorAll('.article-row').forEach((row, idx) => {
+    document.querySelectorAll('.aac-card').forEach(aacCard => {
+        const idx  = parseInt(aacCard.dataset.cardIdx);
         const card = [...document.querySelectorAll('.card')][idx];
         if (!card) return;
-        const text = (card.querySelector('.card-brand').textContent + ' ' + card.querySelector('.card-title').textContent).toLowerCase();
+        const text   = (aacCard.dataset.search || '');
         const matchQ = !q || text.includes(q.toLowerCase());
         const matchG = !gFilter || card.dataset.group === gFilter;
-        row.style.display = (matchQ && matchG) ? '' : 'none';
+        aacCard.style.display = (matchQ && matchG) ? '' : 'none';
     });
 }
 
@@ -4693,54 +5300,166 @@ function applyBulkDelete() {
     showToast(`${cards.length} article(s) supprimé(s)`, 'error');
 }
 
-// ===== STOCK TAB =====
+// ===== STOCK DASHBOARD =====
+function relTime(iso) {
+    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60)    return 'à l\'instant';
+    if (diff < 3600)  return `il y a ${Math.floor(diff/60)} min`;
+    if (diff < 86400) return `il y a ${Math.floor(diff/3600)} h`;
+    return `il y a ${Math.floor(diff/86400)} j`;
+}
+
 function renderStockPanel() {
     const cards = [...document.querySelectorAll('.card')];
-    let totalValue = 0, outCount = 0, lowCount = 0;
+    let totalValue = 0, outCount = 0, lowCount = 0, okCount = 0, infCount = 0;
 
-    const rows = cards.map((card, idx) => {
-        const imgEl = card.querySelector('.card-img img');
-        const emoji = card.querySelector('.card-img').textContent.trim();
-        const brand = card.querySelector('.card-brand').textContent.trim();
-        const title = card.querySelector('.card-title').textContent.trim();
+    cards.forEach(card => {
         const priceEl = card.querySelector('.card-price');
-        const nodes = [...priceEl.childNodes].filter(n => n.nodeType === 3);
-        const priceText = nodes.length ? nodes[nodes.length-1].textContent.trim() : priceEl.textContent.trim();
-        const price = parseFloat(priceText.replace(/[^\d,]/g,'').replace(',','.')) || 0;
-        const stock = getStock(card);
-        const stockVal = stock !== null ? price * stock : null;
-        if (stockVal !== null) totalValue += stockVal;
-        if (stock === 0) outCount++;
-        else if (stock !== null && stock <= 5) lowCount++;
+        const nodes   = [...priceEl.childNodes].filter(n => n.nodeType === 3);
+        const price   = parseFloat((nodes.length ? nodes[nodes.length-1].textContent : priceEl.textContent).replace(/[^\d,]/g,'').replace(',','.')) || 0;
+        const stock   = getStock(card);
+        if (stock === null)            { infCount++; }
+        else if (stock === 0)          { outCount++; }
+        else if (stock <= 5)           { lowCount++; totalValue += price * stock; }
+        else                           { okCount++;  totalValue += price * stock; }
+    });
 
-        let statusBadge;
-        if (stock === null) statusBadge = '<span class="stock-badge stock-inf">Illimité</span>';
-        else if (stock === 0) statusBadge = '<span class="stock-badge stock-out">Rupture</span>';
-        else if (stock <= 5) statusBadge = '<span class="stock-badge stock-low">Stock faible</span>';
-        else statusBadge = '<span class="stock-badge stock-ok">En stock</span>';
+    const total = cards.length;
+    const fmtV  = v => v >= 1000 ? (v/1000).toFixed(1).replace('.',',') + ' k€' : v.toFixed(0) + ' €';
 
-        const imgHtml = imgEl ? `<img src="${imgEl.src}" style="width:36px;height:36px;object-fit:cover;border-radius:8px;">` : `<span style="font-size:22px;">${emoji}</span>`;
-
-        return `<tr>
-            <td><div class="td-img">${imgHtml}</div></td>
-            <td><div class="aps-brand">${brand}</div><div class="aps-title">${title}</div></td>
-            <td style="font-weight:700;">${priceText}</td>
-            <td><input type="number" class="inline-stock-input" value="${stock ?? ''}" placeholder="∞" min="0" onchange="inlineSetStock(this, ${idx})"></td>
-            <td style="font-weight:700;color:var(--dark);">${stockVal !== null ? fmt(stockVal) : '—'}</td>
-            <td>${statusBadge}</td>
-            <td><button onclick="openEditModal(document.querySelectorAll('.card')[${idx}])" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--gray-200);background:white;cursor:pointer;font-size:12px;color:var(--primary);"><i class="fas fa-pen"></i></button></td>
-        </tr>`;
+    // ── Donut SVG ──────────────────────────────────────────
+    const R = 68, CX = 90, CY = 90, circ = 2 * Math.PI * R;
+    const segs = [
+        { count: okCount,  color: '#10B981', label: 'En stock'   },
+        { count: lowCount, color: '#F59E0B', label: 'Flux tendu' },
+        { count: outCount, color: '#EF4444', label: 'Rupture'    },
+        { count: infCount, color: '#9ca3af', label: 'Illimité'   },
+    ];
+    let cumLen = 0;
+    const svgSegs = total === 0 ? '' : segs.filter(s => s.count > 0).map(s => {
+        const dash   = (s.count / total) * circ;
+        const offset = circ * 0.25 - cumLen;
+        cumLen += dash;
+        return `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${s.color}" stroke-width="22"
+            stroke-dasharray="${dash} ${circ - dash}"
+            stroke-dashoffset="${offset}"
+            stroke-linecap="butt"/>`;
     }).join('');
 
-    document.getElementById('stock-tbody').innerHTML = rows || '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--gray-500);">Aucun article</td></tr>';
+    // ── Activity feed ───────────────────────────────────────
+    const ACT_ICONS = { add:'fas fa-plus', edit:'fas fa-pen', del:'fas fa-trash', grp:'fas fa-layer-group', cfg:'fas fa-cog' };
+    const actHtml = activityLog.length
+        ? activityLog.slice(0,10).map(e => `
+            <div class="sdash-activity-item">
+                <div class="sdash-act-dot ${e.type}"><i class="${ACT_ICONS[e.type]||'fas fa-circle'}"></i></div>
+                <div style="flex:1;min-width:0;">
+                    <div class="sdash-act-title">${e.message}</div>
+                    ${e.detail ? `<div class="sdash-act-detail">${e.detail}</div>` : ''}
+                </div>
+                <div class="sdash-act-time">${relTime(e.time)}</div>
+            </div>`).join('')
+        : '<div style="text-align:center;padding:32px;color:var(--gray-500);font-size:13px;"><i class="fas fa-inbox" style="font-size:28px;display:block;margin-bottom:8px;"></i>Aucune activité</div>';
 
-    const tracked = cards.filter(c => getStock(c) !== null).length;
+    // ── Criticals table ─────────────────────────────────────
+    const critCards = cards.map((c, i) => ({ c, i })).filter(({ c }) => { const s = getStock(c); return s !== null && s <= 5; });
+    const critHtml  = critCards.length
+        ? critCards.map(({ c, i }) => {
+            const brand   = c.querySelector('.card-brand').textContent.trim();
+            const title   = c.querySelector('.card-title').textContent.trim();
+            const stock   = getStock(c);
+            const imgEl   = c.querySelector('.card-img img');
+            const emoji   = c.querySelector('.card-img').textContent.trim();
+            const imgHtml = imgEl ? `<img src="${imgEl.src}" style="width:32px;height:32px;object-fit:cover;border-radius:6px;">` : `<span style="font-size:20px;">${emoji}</span>`;
+            const badge   = stock === 0
+                ? '<span class="stock-badge stock-out">Rupture</span>'
+                : `<span class="stock-badge stock-low">${stock} restant${stock > 1 ? 's' : ''}</span>`;
+            return `<tr>
+                <td><div class="td-img">${imgHtml}</div></td>
+                <td><div class="aps-brand">${brand}</div><div class="aps-title">${title}</div></td>
+                <td>${badge}</td>
+                <td><button onclick="openEditModal(document.querySelectorAll('.card')[${i}])"
+                    style="width:28px;height:28px;border-radius:6px;border:1px solid var(--gray-200);background:white;cursor:pointer;font-size:11px;color:var(--primary);">
+                    <i class="fas fa-pen"></i></button></td>
+            </tr>`;
+        }).join('')
+        : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--success);"><i class="fas fa-check-circle"></i> Aucune alerte critique</td></tr>';
+
+    // ── Inject dashboard ────────────────────────────────────
     document.getElementById('stock-stats-row').innerHTML = `
-        <div class="aps-stat-card"><div class="stat-icon-big">💰</div><div class="stat-num">${fmt(totalValue)}</div><div class="stat-label">Valeur stock total</div></div>
-        <div class="aps-stat-card"><div class="stat-icon-big">🔴</div><div class="stat-num">${outCount}</div><div class="stat-label">Rupture de stock</div></div>
-        <div class="aps-stat-card"><div class="stat-icon-big">🟡</div><div class="stat-num">${lowCount}</div><div class="stat-label">Stock faible (≤5)</div></div>
-        <div class="aps-stat-card"><div class="stat-icon-big">📊</div><div class="stat-num">${tracked}</div><div class="stat-label">Articles suivis</div></div>
-    `;
+    <div class="sdash-layout">
+
+        <div class="sdash-kpis">
+            <div class="sdash-kpi">
+                <div class="sdash-kpi-icon" style="background:#D1FAE5;color:#10B981;"><i class="fas fa-boxes-stacked"></i></div>
+                <div><div class="sdash-kpi-num">${total}</div><div class="sdash-kpi-label">Articles catalogue</div></div>
+            </div>
+            <div class="sdash-kpi">
+                <div class="sdash-kpi-icon" style="background:#EDE9FE;color:var(--primary);"><i class="fas fa-euro-sign"></i></div>
+                <div><div class="sdash-kpi-num">${fmtV(totalValue)}</div><div class="sdash-kpi-label">Valeur totale du stock</div></div>
+            </div>
+            <div class="sdash-kpi${outCount > 0 ? ' sdash-kpi-alert' : ''}">
+                <div class="sdash-kpi-icon" style="background:${outCount > 0 ? '#FEE2E2' : '#D1FAE5'};color:${outCount > 0 ? '#EF4444' : '#10B981'};">
+                    <i class="fas fa-${outCount > 0 ? 'triangle-exclamation' : 'check-circle'}"></i>
+                </div>
+                <div>
+                    <div class="sdash-kpi-num" style="color:${outCount > 0 ? '#EF4444' : '#10B981'};">${outCount}</div>
+                    <div class="sdash-kpi-label">Ruptures de stock</div>
+                </div>
+            </div>
+            <div class="sdash-kpi">
+                <div class="sdash-kpi-icon" style="background:#FEF3C7;color:#F59E0B;"><i class="fas fa-gauge-high"></i></div>
+                <div><div class="sdash-kpi-num" style="color:#F59E0B;">${lowCount}</div><div class="sdash-kpi-label">Flux tendu (≤ 5)</div></div>
+            </div>
+        </div>
+
+        <div class="sdash-body">
+            <div class="sdash-panel">
+                <div class="sdash-panel-title"><i class="fas fa-chart-pie"></i> Répartition du stock</div>
+                <div class="sdash-donut-area">
+                    <svg width="180" height="180" viewBox="0 0 180 180">
+                        <circle cx="90" cy="90" r="68" fill="none" stroke="var(--gray-200)" stroke-width="22"/>
+                        ${svgSegs}
+                        <text x="90" y="86" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="800" fill="#1E1B4B">${total}</text>
+                        <text x="90" y="103" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#9ca3af">articles</text>
+                    </svg>
+                </div>
+                <div class="sdash-legend">
+                    <div class="sdash-legend-item"><span class="sdash-legend-dot" style="background:#10B981;"></span><span>En stock</span><strong>${okCount}</strong></div>
+                    <div class="sdash-legend-item"><span class="sdash-legend-dot" style="background:#F59E0B;"></span><span>Flux tendu</span><strong>${lowCount}</strong></div>
+                    <div class="sdash-legend-item"><span class="sdash-legend-dot" style="background:#EF4444;"></span><span>Rupture</span><strong>${outCount}</strong></div>
+                    <div class="sdash-legend-item"><span class="sdash-legend-dot" style="background:#9ca3af;"></span><span>Illimité</span><strong>${infCount}</strong></div>
+                </div>
+            </div>
+
+            <div class="sdash-panel" style="display:flex;flex-direction:column;">
+                <div class="sdash-panel-title"><i class="fas fa-clock-rotate-left"></i> Activité récente</div>
+                <div class="sdash-activity-list">${actHtml}</div>
+                <button onclick="switchTab('journal')" style="margin-top:12px;background:none;border:1px solid var(--gray-200);border-radius:8px;padding:8px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--gray-500);cursor:pointer;transition:var(--transition);"
+                    onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)';"
+                    onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-500)';">
+                    Voir le journal complet →
+                </button>
+            </div>
+        </div>
+
+        <div class="sdash-critical">
+            <div class="sdash-panel-title" style="margin-bottom:12px;">
+                <i class="fas fa-triangle-exclamation" style="color:#F59E0B;"></i> Articles critiques
+                <span style="font-size:11px;font-weight:400;color:var(--gray-500);margin-left:6px;">Ruptures & flux tendu</span>
+            </div>
+            <div class="aps-table-wrap" style="margin:0;border-radius:10px;">
+                <table class="aps-table">
+                    <thead><tr><th>Image</th><th>Article</th><th>Statut</th><th></th></tr></thead>
+                    <tbody>${critHtml}</tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>`;
+
+    document.getElementById('stock-tbody').innerHTML = '';
+    const stockTableWrap = document.querySelector('#aps-tab-stock > .aps-table-wrap');
+    if (stockTableWrap) stockTableWrap.style.display = 'none';
 }
 
 // ===== EXPORT CATALOG =====
@@ -4792,5 +5511,151 @@ switchTab = function(tab) {
 // Apply visibility on load
 applyVisibilityToAll();
 </script>
+
+<script>
+/* ═══════════════════════════════════════════
+   KTB SCROLL ANIMATIONS ENGINE
+═══════════════════════════════════════════ */
+
+(function() {
+
+    /* ── LOADER ── */
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var loader = document.getElementById('ktb-loader');
+            if (loader) loader.classList.add('hide');
+            setTimeout(function() {
+                if (loader) loader.style.display = 'none';
+            }, 600);
+        }, 1700);
+    });
+
+    /* ── CURSOR ── */
+    var cur   = document.getElementById('ktb-cursor');
+    var ring  = document.getElementById('ktb-cursor-ring');
+    var rx = window.innerWidth / 2, ry = window.innerHeight / 2;
+    var mx = rx, my = ry;
+
+    if (window.matchMedia('(hover: hover)').matches) {
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX; my = e.clientY;
+            if (cur) cur.style.transform = 'translate(' + (mx) + 'px,' + (my) + 'px) translate(-50%,-50%)';
+        });
+
+        function animRing() {
+            rx += (mx - rx) * 0.14;
+            ry += (my - ry) * 0.14;
+            if (ring) ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+            requestAnimationFrame(animRing);
+        }
+        animRing();
+
+        var hoverEls = document.querySelectorAll('a, button, .card, .cat-chip, .icon-btn');
+        hoverEls.forEach(function(el) {
+            el.addEventListener('mouseenter', function() { document.body.classList.add('ktb-cursor-hover'); });
+            el.addEventListener('mouseleave', function() { document.body.classList.remove('ktb-cursor-hover'); });
+        });
+    }
+
+    /* ── PROGRESS BAR ── */
+    var prog = document.getElementById('ktb-progress');
+    window.addEventListener('scroll', function() {
+        if (!prog) return;
+        var h = document.documentElement;
+        var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+        prog.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+
+    /* ── SCROLL REVEAL — Intersection Observer ── */
+    function addRevealClass(selector, cls) {
+        document.querySelectorAll(selector).forEach(function(el) {
+            el.classList.add(cls || 'ktb-reveal');
+        });
+    }
+
+    // Ajouter les classes de reveal
+    addRevealClass('.card', 'ktb-reveal');
+    addRevealClass('.section-head', 'ktb-reveal');
+    addRevealClass('.feature-card', 'ktb-reveal');
+    addRevealClass('.stat-item', 'ktb-reveal');
+    addRevealClass('.promo-banner-inner', 'ktb-reveal');
+    addRevealClass('.newsletter-inner', 'ktb-reveal');
+    addRevealClass('.footer-col', 'ktb-reveal');
+    addRevealClass('.cat-chip', 'ktb-reveal');
+    addRevealClass('.categories', 'ktb-reveal');
+
+    // stagger les cat-chips
+    document.querySelectorAll('.cat-chip').forEach(function(el, i) {
+        el.style.transitionDelay = (i * 0.06) + 's';
+    });
+
+    // stagger footer cols
+    document.querySelectorAll('.footer-col').forEach(function(el, i) {
+        el.style.transitionDelay = (i * 0.1) + 's';
+    });
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // optionnel : désobserver après révélation
+                // observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -48px 0px'
+    });
+
+    function observeAll() {
+        document.querySelectorAll('.ktb-reveal, .ktb-reveal-left, .ktb-reveal-right').forEach(function(el) {
+            observer.observe(el);
+        });
+    }
+    observeAll();
+
+    // Ré-observer après ajout dynamique de cartes (mode admin)
+    var mo = new MutationObserver(function() {
+        document.querySelectorAll('.card:not([data-observed])').forEach(function(card) {
+            card.classList.add('ktb-reveal');
+            card.dataset.observed = '1';
+            observer.observe(card);
+        });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    /* ── PARALLAX LÉGER SUR HERO ── */
+    var heroInner = document.querySelector('.hero-inner');
+    var heroOrbs  = document.querySelectorAll('.hero-orb');
+    window.addEventListener('scroll', function() {
+        var sy = window.scrollY;
+        var vh = window.innerHeight;
+        if (sy > vh) return;
+        var ratio = sy / vh;
+        if (heroInner) {
+            heroInner.style.transform = 'translateY(' + (sy * 0.18) + 'px)';
+            heroInner.style.opacity   = 1 - ratio * 1.1;
+        }
+        heroOrbs.forEach(function(orb, i) {
+            var spd = (i + 1) * 0.07;
+            orb.style.transform = 'translate(' + (sy * spd * 0.4) + 'px,' + (sy * spd) + 'px) scale(1.1)';
+        });
+    }, { passive: true });
+
+    /* ── FLOAT EMOJI (cartes sans image) ── */
+    // Déjà géré en CSS, mais on ajoute des délais différents
+    document.querySelectorAll('.card-img').forEach(function(el, i) {
+        var target = el.querySelector('img') || el;
+        target.style.animationDelay = '-' + (i * 0.8) + 's';
+    });
+
+    /* ── SMOOTH ANCHOR scroll ── */
+    document.querySelectorAll('a[href="#"]').forEach(function(a) {
+        // On ne fait rien pour les ancres vides
+    });
+
+})();
+</script>
+
 </body>
 </html>
